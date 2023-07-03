@@ -11,7 +11,6 @@ import {
   DEFAULT_EIP155_METHODS,
   DEFAULT_MAIN_CHAINS,
   DEFAULT_SOLANA_METHODS,
-  DEFAULT_POLKADOT_METHODS,
   DEFAULT_TEST_CHAINS,
   DEFAULT_NEAR_METHODS,
   DEFAULT_TEZOS_METHODS,
@@ -69,7 +68,6 @@ const Home: NextPage = () => {
     ping,
     ethereumRpc,
     solanaRpc,
-    polkadotRpc,
     nearRpc,
     tezosRpc,
     isRpcRequestPending,
@@ -197,27 +195,6 @@ const Home: NextPage = () => {
     ];
   };
 
-  const getPolkadotActions = (): AccountAction[] => {
-    const onSignTransaction = async (chainId: string, address: string) => {
-      openRequestModal();
-      await polkadotRpc.testSignTransaction(chainId, address);
-    };
-    const onSignMessage = async (chainId: string, address: string) => {
-      openRequestModal();
-      await polkadotRpc.testSignMessage(chainId, address);
-    };
-    return [
-      {
-        method: DEFAULT_POLKADOT_METHODS.POLKADOT_SIGN_TRANSACTION,
-        callback: onSignTransaction,
-      },
-      {
-        method: DEFAULT_POLKADOT_METHODS.POLKADOT_SIGN_MESSAGE,
-        callback: onSignMessage,
-      },
-    ];
-  };
-
   const getNearActions = (): AccountAction[] => {
     const onSignAndSendTransaction = async (
       chainId: string,
@@ -281,8 +258,6 @@ const Home: NextPage = () => {
         return getEthereumActions();
       case "solana":
         return getSolanaActions();
-      case "polkadot":
-        return getPolkadotActions();
       case "near":
         return getNearActions();
       case "tezos":

@@ -11,7 +11,6 @@ export const DEFAULT_MAIN_CHAINS = [
   "eip155:42161",
   "eip155:42220",
   "solana:4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZ",
-  "polkadot:91b171bb158e2d3848fa23a9f1c25182",
   "mvx:1",
   "tezos:mainnet",
 ];
@@ -25,7 +24,6 @@ export const DEFAULT_TEST_CHAINS = [
   "eip155:421611",
   "eip155:44787",
   "solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K",
-  "polkadot:e143f23803ac50e8f6f8e62695d1ce9e",
   "near:testnet",
   "mvx:D",
   "tezos:testnet",
@@ -74,16 +72,6 @@ export enum DEFAULT_SOLANA_METHODS {
 }
 
 export enum DEFAULT_SOLANA_EVENTS {}
-
-/**
- * POLKADOT
- */
-export enum DEFAULT_POLKADOT_METHODS {
-  POLKADOT_SIGN_TRANSACTION = "polkadot_signTransaction",
-  POLKADOT_SIGN_MESSAGE = "polkadot_signMessage",
-}
-
-export enum DEFAULT_POLKADOT_EVENTS {}
 
 /**
  * NEAR
