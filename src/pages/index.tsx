@@ -12,7 +12,6 @@ import {
   DEFAULT_MAIN_CHAINS,
   DEFAULT_SOLANA_METHODS,
   DEFAULT_POLKADOT_METHODS,
-  DEFAULT_MULTIVERSX_METHODS,
   DEFAULT_TEST_CHAINS,
   DEFAULT_NEAR_METHODS,
   DEFAULT_TEZOS_METHODS,
@@ -72,7 +71,6 @@ const Home: NextPage = () => {
     solanaRpc,
     polkadotRpc,
     nearRpc,
-    multiversxRpc,
     tezosRpc,
     isRpcRequestPending,
     rpcResult,
@@ -247,35 +245,6 @@ const Home: NextPage = () => {
     ];
   };
 
-  const getMultiversxActions = (): AccountAction[] => {
-    const onSignTransaction = async (chainId: string, address: string) => {
-      openRequestModal();
-      await multiversxRpc.testSignTransaction(chainId, address);
-    };
-    const onSignTransactions = async (chainId: string, address: string) => {
-      openRequestModal();
-      await multiversxRpc.testSignTransactions(chainId, address);
-    };
-    const onSignMessage = async (chainId: string, address: string) => {
-      openRequestModal();
-      await multiversxRpc.testSignMessage(chainId, address);
-    };
-    return [
-      {
-        method: DEFAULT_MULTIVERSX_METHODS.MULTIVERSX_SIGN_TRANSACTION,
-        callback: onSignTransaction,
-      },
-      {
-        method: DEFAULT_MULTIVERSX_METHODS.MULTIVERSX_SIGN_TRANSACTIONS,
-        callback: onSignTransactions,
-      },
-      {
-        method: DEFAULT_MULTIVERSX_METHODS.MULTIVERSX_SIGN_MESSAGE,
-        callback: onSignMessage,
-      },
-    ];
-  };
-
   const getTezosActions = (): AccountAction[] => {
     const onGetAccounts = async (chainId: string, address: string) => {
       openRequestModal();
@@ -316,8 +285,6 @@ const Home: NextPage = () => {
         return getPolkadotActions();
       case "near":
         return getNearActions();
-      case "mvx":
-        return getMultiversxActions();
       case "tezos":
         return getTezosActions();
       default:

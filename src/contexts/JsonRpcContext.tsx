@@ -27,21 +27,12 @@ import {
   DEFAULT_SOLANA_METHODS,
   DEFAULT_POLKADOT_METHODS,
   DEFAULT_NEAR_METHODS,
-  DEFAULT_MULTIVERSX_METHODS,
   DEFAULT_TEZOS_METHODS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
 } from "../constants";
 import { useChainData } from "./ChainDataContext";
 import { rpcProvidersByChainId } from "../../src/helpers/api";
 import { signatureVerify, cryptoWaitReady } from "@polkadot/util-crypto";
-
-import {
-  Transaction as MultiversxTransaction,
-  TransactionPayload,
-  Address,
-  SignableMessage,
-} from "@multiversx/sdk-core";
-import { UserVerifier } from "@multiversx/sdk-wallet/out/userVerifier";
 
 /**
  * Types
@@ -76,11 +67,6 @@ interface IContext {
   nearRpc: {
     testSignAndSendTransaction: TRpcRequestCallback;
     testSignAndSendTransactions: TRpcRequestCallback;
-  };
-  multiversxRpc: {
-    testSignMessage: TRpcRequestCallback;
-    testSignTransaction: TRpcRequestCallback;
-    testSignTransactions: TRpcRequestCallback;
   };
   tezosRpc: {
     testGetAccounts: TRpcRequestCallback;
@@ -787,198 +773,6 @@ export function JsonRpcContextProvider({
     ),
   };
 
-  // -------- MULTIVERSX RPC METHODS --------
-
-  const multiversxRpc = {
-    testSignTransaction: _createJsonRpcRequestHandler(
-      async (
-        chainId: string,
-        address: string
-      ): Promise<IFormattedRpcResponse> => {
-        const reference = chainId.split(":")[1];
-
-        const userAddress = new Address(address);
-        const verifier = UserVerifier.fromAddress(userAddress);
-        const transactionPayload = new TransactionPayload("testdata");
-
-        const testTransaction = new MultiversxTransaction({
-          nonce: 1,
-          value: "10000000000000000000",
-          receiver: Address.fromBech32(address),
-          sender: userAddress,
-          gasPrice: 1000000000,
-          gasLimit: 50000,
-          chainID: reference,
-          data: transactionPayload,
-        });
-        const transaction = testTransaction.toPlainObject();
-
-        try {
-          const result = await client!.request<{ signature: Buffer }>({
-            chainId,
-            topic: session!.topic,
-            request: {
-              method: DEFAULT_MULTIVERSX_METHODS.MULTIVERSX_SIGN_TRANSACTION,
-              params: {
-                transaction,
-              },
-            },
-          });
-
-          const valid = verifier.verify(
-            testTransaction.serializeForSigning(Address.fromBech32(address)),
-            result.signature
-          );
-
-          return {
-            method: DEFAULT_MULTIVERSX_METHODS.MULTIVERSX_SIGN_TRANSACTION,
-            address,
-            valid,
-            result: result.signature.toString(),
-          };
-        } catch (error: any) {
-          throw new Error(error);
-        }
-      }
-    ),
-    testSignTransactions: _createJsonRpcRequestHandler(
-      async (
-        chainId: string,
-        address: string
-      ): Promise<IFormattedRpcResponse> => {
-        const reference = chainId.split(":")[1];
-
-        const userAddress = new Address(address);
-        const verifier = UserVerifier.fromAddress(userAddress);
-        const testTransactionPayload = new TransactionPayload("testdata");
-
-        const testTransaction = new MultiversxTransaction({
-          nonce: 1,
-          value: "10000000000000000000",
-          receiver: Address.fromBech32(address),
-          sender: userAddress,
-          gasPrice: 1000000000,
-          gasLimit: 50000,
-          chainID: reference,
-          data: testTransactionPayload,
-        });
-
-        // no data for this Transaction
-        const testTransaction2 = new MultiversxTransaction({
-          nonce: 2,
-          value: "20000000000000000000",
-          receiver: Address.fromBech32(address),
-          sender: userAddress,
-          gasPrice: 1000000000,
-          gasLimit: 50000,
-          chainID: reference,
-        });
-
-        const testTransaction3Payload = new TransactionPayload("third");
-        const testTransaction3 = new MultiversxTransaction({
-          nonce: 3,
-          value: "300000000000000000",
-          receiver: Address.fromBech32(address),
-          sender: userAddress,
-          gasPrice: 1000000000,
-          gasLimit: 50000,
-          chainID: reference,
-          data: testTransaction3Payload,
-        });
-
-        const transactions = [
-          testTransaction,
-          testTransaction2,
-          testTransaction3,
-        ].map((transaction) => transaction.toPlainObject());
-
-        try {
-          const result = await client!.request<{
-            signatures: { signature: Buffer }[];
-          }>({
-            chainId,
-            topic: session!.topic,
-            request: {
-              method: DEFAULT_MULTIVERSX_METHODS.MULTIVERSX_SIGN_TRANSACTIONS,
-              params: {
-                transactions,
-              },
-            },
-          });
-
-          const valid = [
-            testTransaction,
-            testTransaction2,
-            testTransaction3,
-          ].reduce((acc, current, index) => {
-            return (
-              acc &&
-              verifier.verify(
-                current.serializeForSigning(Address.fromBech32(address)),
-                result.signatures[index].signature
-              )
-            );
-          }, true);
-
-          const resultSignatures = result.signatures.map(
-            (signature: any) => signature.signature
-          );
-
-          return {
-            method: DEFAULT_MULTIVERSX_METHODS.MULTIVERSX_SIGN_TRANSACTIONS,
-            address,
-            valid,
-            result: resultSignatures.join(", "),
-          };
-        } catch (error: any) {
-          throw new Error(error);
-        }
-      }
-    ),
-    testSignMessage: _createJsonRpcRequestHandler(
-      async (
-        chainId: string,
-        address: string
-      ): Promise<IFormattedRpcResponse> => {
-        const userAddress = new Address(address);
-        const verifier = UserVerifier.fromAddress(userAddress);
-
-        const testMessage = new SignableMessage({
-          address: userAddress,
-          message: Buffer.from(`Sign this message - ${Date.now()}`, "ascii"),
-        });
-
-        try {
-          const result = await client!.request<{ signature: Buffer }>({
-            chainId,
-            topic: session!.topic,
-            request: {
-              method: DEFAULT_MULTIVERSX_METHODS.MULTIVERSX_SIGN_MESSAGE,
-              params: {
-                address,
-                message: testMessage.message.toString(),
-              },
-            },
-          });
-
-          const valid = verifier.verify(
-            testMessage.serializeForSigning(),
-            result.signature
-          );
-
-          return {
-            method: DEFAULT_MULTIVERSX_METHODS.MULTIVERSX_SIGN_MESSAGE,
-            address,
-            valid,
-            result: result.signature.toString(),
-          };
-        } catch (error: any) {
-          throw new Error(error);
-        }
-      }
-    ),
-  };
-
   // -------- TEZOS RPC METHODS --------
 
   const tezosRpc = {
@@ -1084,7 +878,6 @@ export function JsonRpcContextProvider({
         solanaRpc,
         polkadotRpc,
         nearRpc,
-        multiversxRpc,
         tezosRpc,
         rpcResult: result,
         isRpcRequestPending: pending,

@@ -4,7 +4,6 @@ import * as eip155 from "./eip155";
 import * as polkadot from "./polkadot";
 import * as solana from "./solana";
 import * as near from "./near";
-import * as multiversx from "./multiversx";
 import * as tezos from "./tezos";
 
 import { ChainMetadata, ChainRequestRender } from "../helpers";
@@ -20,8 +19,6 @@ export function getChainMetadata(chainId: string): ChainMetadata {
       return solana.getChainMetadata(chainId);
     case "near":
       return near.getChainMetadata(chainId);
-    case "mvx":
-      return multiversx.getChainMetadata(chainId);
     case "tezos":
       return tezos.getChainMetadata(chainId);
     default:
