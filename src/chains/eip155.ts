@@ -15,7 +15,6 @@ export const EIP155Colors = {
   optimism: "233, 1, 1",
   goerli: "189, 174, 155",
   xdai: "73, 169, 166",
-  polygon: "130, 71, 229",
   zksync: "90, 90, 90",
   arbitrum: "44, 55, 75",
 };
@@ -77,13 +76,6 @@ export const EIP155ChainData: ChainsMap = {
     slip44: 60,
     testnet: false,
   },
-  "137": {
-    name: "Polygon Mainnet",
-    id: "eip155:137",
-    rpc: ["https://rpc-mainnet.matic.network"],
-    slip44: 60,
-    testnet: false,
-  },
   "420": {
     name: "Optimism Goerli",
     id: "eip155:420",
@@ -97,13 +89,6 @@ export const EIP155ChainData: ChainsMap = {
     rpc: ["https://arb1.arbitrum.io/rpc"],
     slip44: 60,
     testnet: false,
-  },
-  "80001": {
-    name: "Polygon Mumbai",
-    id: "eip155:80001",
-    rpc: ["https://rpc-mumbai.matic.today"],
-    slip44: 60,
-    testnet: true,
   },
   "421611": {
     name: "Arbitrum Rinkeby",
@@ -150,15 +135,6 @@ export const EIP155Metadata: NamespaceMetadata = {
     name: "zkSync Era",
     logo: "/assets/eip155-324.svg",
     rgb: EIP155Colors.zksync,
-  },
-  "137": {
-    name: "Polygon",
-    logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:137.png",
-    rgb: EIP155Colors.polygon,
-  },
-  "80001": {
-    logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:80001.png",
-    rgb: EIP155Colors.polygon,
   },
   "42161": {
     name: "Arbitrum",

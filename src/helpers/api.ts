@@ -18,14 +18,6 @@ export const rpcProvidersByChainId: Record<number, any> = {
       symbol: "ETH",
     },
   },
-  137: {
-    name: "Polygon Mainnet",
-    baseURL: "https://polygon-rpc.com",
-    token: {
-      name: "Matic",
-      symbol: "MATIC",
-    },
-  },
   280: {
     name: "zkSync Era Testnet",
     baseURL: "https://testnet.era.zksync.dev",
@@ -40,14 +32,6 @@ export const rpcProvidersByChainId: Record<number, any> = {
     token: {
       name: "Ether",
       symbol: "ETH",
-    },
-  },
-  80001: {
-    name: "Polygon Mumbai",
-    baseURL: "https://rpc-mumbai.maticvigil.com",
-    token: {
-      name: "Matic",
-      symbol: "MATIC",
     },
   },
   10: {

@@ -8,7 +8,6 @@ import { AssetData, fromWad } from "../helpers";
 import { getChainMetadata } from "../chains";
 
 const xdai = getChainMetadata("eip155:100").logo;
-const matic = getChainMetadata("eip155:137").logo;
 
 const SAsset = styled.div`
   width: 100%;
