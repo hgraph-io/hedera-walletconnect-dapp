@@ -6,7 +6,6 @@ import {
   useState,
 } from "react";
 import { SolanaChainData } from "../chains/solana";
-import { PolkadotChainData } from "../chains/polkadot";
 
 import { ChainNamespaces, ChainsMap, getAllChainNamespaces } from "../helpers";
 import { NearChainData } from "../chains/near";
@@ -44,9 +43,6 @@ export function ChainDataContextProvider({
         switch (namespace) {
           case "solana":
             chains = SolanaChainData;
-            break;
-          case "polkadot":
-            chains = PolkadotChainData;
             break;
           case "near":
             chains = NearChainData;

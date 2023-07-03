@@ -25,14 +25,12 @@ import { useWalletConnectClient } from "./ClientContext";
 import {
   DEFAULT_EIP155_METHODS,
   DEFAULT_SOLANA_METHODS,
-  DEFAULT_POLKADOT_METHODS,
   DEFAULT_NEAR_METHODS,
   DEFAULT_TEZOS_METHODS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
 } from "../constants";
 import { useChainData } from "./ChainDataContext";
 import { rpcProvidersByChainId } from "../../src/helpers/api";
-import { signatureVerify, cryptoWaitReady } from "@polkadot/util-crypto";
 
 /**
  * Types
@@ -57,10 +55,6 @@ interface IContext {
     testSignTypedDatav4: TRpcRequestCallback;
   };
   solanaRpc: {
-    testSignMessage: TRpcRequestCallback;
-    testSignTransaction: TRpcRequestCallback;
-  };
-  polkadotRpc: {
     testSignMessage: TRpcRequestCallback;
     testSignTransaction: TRpcRequestCallback;
   };
@@ -569,108 +563,6 @@ export function JsonRpcContextProvider({
     ),
   };
 
-  // -------- POLKADOT RPC METHODS --------
-  const polkadotRpc = {
-    testSignTransaction: _createJsonRpcRequestHandler(
-      async (
-        chainId: string,
-        address: string
-      ): Promise<IFormattedRpcResponse> => {
-        const transactionPayload = {
-          specVersion: "0x00002468",
-          transactionVersion: "0x0000000e",
-          address: `${address}`,
-          blockHash:
-            "0x554d682a74099d05e8b7852d19c93b527b5fae1e9e1969f6e1b82a2f09a14cc9",
-          blockNumber: "0x00cb539c",
-          era: "0xc501",
-          genesisHash:
-            "0xe143f23803ac50e8f6f8e62695d1ce9e4e1d68aa36c1cd2cfd15340213f3423e",
-          method:
-            "0x0001784920616d207369676e696e672074686973207472616e73616374696f6e21",
-          nonce: "0x00000000",
-          signedExtensions: [
-            "CheckNonZeroSender",
-            "CheckSpecVersion",
-            "CheckTxVersion",
-            "CheckGenesis",
-            "CheckMortality",
-            "CheckNonce",
-            "CheckWeight",
-            "ChargeTransactionPayment",
-          ],
-          tip: "0x00000000000000000000000000000000",
-          version: 4,
-        };
-
-        try {
-          const result = await client!.request<{
-            payload: string;
-            signature: string;
-          }>({
-            chainId,
-            topic: session!.topic,
-            request: {
-              method: DEFAULT_POLKADOT_METHODS.POLKADOT_SIGN_TRANSACTION,
-              params: {
-                address,
-                transactionPayload,
-              },
-            },
-          });
-
-          return {
-            method: DEFAULT_POLKADOT_METHODS.POLKADOT_SIGN_TRANSACTION,
-            address,
-            valid: true,
-            result: result.signature,
-          };
-        } catch (error: any) {
-          throw new Error(error);
-        }
-      }
-    ),
-    testSignMessage: _createJsonRpcRequestHandler(
-      async (
-        chainId: string,
-        address: string
-      ): Promise<IFormattedRpcResponse> => {
-        const message = `This is an example message to be signed - ${Date.now()}`;
-
-        try {
-          const result = await client!.request<{ signature: string }>({
-            chainId,
-            topic: session!.topic,
-            request: {
-              method: DEFAULT_POLKADOT_METHODS.POLKADOT_SIGN_MESSAGE,
-              params: {
-                address,
-                message,
-              },
-            },
-          });
-
-          // sr25519 signatures need to wait for WASM to load
-          await cryptoWaitReady();
-          const { isValid: valid } = signatureVerify(
-            message,
-            result.signature,
-            address
-          );
-
-          return {
-            method: DEFAULT_POLKADOT_METHODS.POLKADOT_SIGN_MESSAGE,
-            address,
-            valid,
-            result: result.signature,
-          };
-        } catch (error: any) {
-          throw new Error(error);
-        }
-      }
-    ),
-  };
-
   // -------- NEAR RPC METHODS --------
 
   const nearRpc = {
@@ -876,7 +768,6 @@ export function JsonRpcContextProvider({
         ping,
         ethereumRpc,
         solanaRpc,
-        polkadotRpc,
         nearRpc,
         tezosRpc,
         rpcResult: result,
