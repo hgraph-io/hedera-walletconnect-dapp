@@ -1,7 +1,5 @@
 import { ProposalTypes } from "@walletconnect/types";
 import {
-  DEFAULT_COSMOS_EVENTS,
-  DEFAULT_COSMOS_METHODS,
   DEFAULT_EIP155_METHODS,
   DEFAULT_EIP_155_EVENTS,
   DEFAULT_SOLANA_EVENTS,
@@ -35,8 +33,6 @@ export const getSupportedRequiredMethodsByNamespace = (namespace: string) => {
   switch (namespace) {
     case "eip155":
       return Object.values(DEFAULT_EIP155_METHODS);
-    case "cosmos":
-      return Object.values(DEFAULT_COSMOS_METHODS);
     case "solana":
       return Object.values(DEFAULT_SOLANA_METHODS);
     case "polkadot":
@@ -60,7 +56,6 @@ export const getSupportedOptionalMethodsByNamespace = (namespace: string) => {
   switch (namespace) {
     case "eip155":
       return Object.values(DEFAULT_EIP155_OPTIONAL_METHODS);
-    case "cosmos":
     case "solana":
     case "polkadot":
     case "near":
@@ -79,8 +74,6 @@ export const getSupportedEventsByNamespace = (namespace: string) => {
   switch (namespace) {
     case "eip155":
       return Object.values(DEFAULT_EIP_155_EVENTS);
-    case "cosmos":
-      return Object.values(DEFAULT_COSMOS_EVENTS);
     case "solana":
       return Object.values(DEFAULT_SOLANA_EVENTS);
     case "polkadot":
