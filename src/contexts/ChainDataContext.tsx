@@ -12,7 +12,6 @@ import { TronChainData } from "../chains/tron";
 
 import { ChainNamespaces, ChainsMap, getAllChainNamespaces } from "../helpers";
 import { NearChainData } from "../chains/near";
-import { CosmosChainData } from "../chains/cosmos";
 import { EIP155ChainData } from "../chains/eip155";
 import { TezosChainData } from "../chains/tezos";
 
@@ -59,9 +58,6 @@ export function ChainDataContextProvider({
             break;
           case "tron":
             chains = TronChainData;
-            break;
-          case "cosmos":
-            chains = CosmosChainData;
             break;
           case "eip155":
             chains = EIP155ChainData;

@@ -8,7 +8,6 @@ import Dropdown from "../components/Dropdown";
 import Header from "../components/Header";
 import Modal from "../components/Modal";
 import {
-  DEFAULT_COSMOS_METHODS,
   DEFAULT_EIP155_METHODS,
   DEFAULT_MAIN_CHAINS,
   DEFAULT_SOLANA_METHODS,
@@ -71,7 +70,6 @@ const Home: NextPage = () => {
   const {
     ping,
     ethereumRpc,
-    cosmosRpc,
     solanaRpc,
     polkadotRpc,
     nearRpc,
@@ -180,27 +178,6 @@ const Home: NextPage = () => {
     });
 
     return availableActions;
-  };
-
-  const getCosmosActions = (): AccountAction[] => {
-    const onSignDirect = async (chainId: string, address: string) => {
-      openRequestModal();
-      await cosmosRpc.testSignDirect(chainId, address);
-    };
-    const onSignAmino = async (chainId: string, address: string) => {
-      openRequestModal();
-      await cosmosRpc.testSignAmino(chainId, address);
-    };
-    return [
-      {
-        method: DEFAULT_COSMOS_METHODS.COSMOS_SIGN_DIRECT,
-        callback: onSignDirect,
-      },
-      {
-        method: DEFAULT_COSMOS_METHODS.COSMOS_SIGN_AMINO,
-        callback: onSignAmino,
-      },
-    ];
   };
 
   const getSolanaActions = (): AccountAction[] => {
@@ -356,8 +333,6 @@ const Home: NextPage = () => {
     switch (namespace) {
       case "eip155":
         return getEthereumActions();
-      case "cosmos":
-        return getCosmosActions();
       case "solana":
         return getSolanaActions();
       case "polkadot":

@@ -10,7 +10,6 @@ export const DEFAULT_MAIN_CHAINS = [
   "eip155:324",
   "eip155:42161",
   "eip155:42220",
-  "cosmos:cosmoshub-4",
   "solana:4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZ",
   "polkadot:91b171bb158e2d3848fa23a9f1c25182",
   "mvx:1",
@@ -67,16 +66,6 @@ export enum DEFAULT_EIP_155_EVENTS {
   ETH_CHAIN_CHANGED = "chainChanged",
   ETH_ACCOUNTS_CHANGED = "accountsChanged",
 }
-
-/**
- * COSMOS
- */
-export enum DEFAULT_COSMOS_METHODS {
-  COSMOS_SIGN_DIRECT = "cosmos_signDirect",
-  COSMOS_SIGN_AMINO = "cosmos_signAmino",
-}
-
-export enum DEFAULT_COSMOS_EVENTS {}
 
 /**
  * SOLANA

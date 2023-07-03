@@ -3,12 +3,6 @@ import { createContext, ReactNode, useContext, useState } from "react";
 import * as encoding from "@walletconnect/encoding";
 import { Transaction as EthTransaction } from "@ethereumjs/tx";
 import { recoverTransaction } from "@celo/wallet-base";
-import {
-  formatDirectSignDoc,
-  stringifySignDocValues,
-  verifyAminoSignature,
-  verifyDirectSignature,
-} from "cosmos-wallet";
 import bs58 from "bs58";
 import { verifyMessageSignature } from "solana-wallet";
 import {
@@ -31,7 +25,6 @@ import {
 } from "../helpers";
 import { useWalletConnectClient } from "./ClientContext";
 import {
-  DEFAULT_COSMOS_METHODS,
   DEFAULT_EIP155_METHODS,
   DEFAULT_SOLANA_METHODS,
   DEFAULT_POLKADOT_METHODS,
@@ -74,10 +67,6 @@ interface IContext {
     testSignPersonalMessage: TRpcRequestCallback;
     testSignTypedData: TRpcRequestCallback;
     testSignTypedDatav4: TRpcRequestCallback;
-  };
-  cosmosRpc: {
-    testSignDirect: TRpcRequestCallback;
-    testSignAmino: TRpcRequestCallback;
   };
   solanaRpc: {
     testSignMessage: TRpcRequestCallback;
@@ -470,126 +459,6 @@ export function JsonRpcContextProvider({
           address,
           valid,
           result: signature,
-        };
-      }
-    ),
-  };
-
-  // -------- COSMOS RPC METHODS --------
-
-  const cosmosRpc = {
-    testSignDirect: _createJsonRpcRequestHandler(
-      async (chainId: string, address: string) => {
-        // test direct sign doc inputs
-        const inputs = {
-          fee: [{ amount: "2000", denom: "ucosm" }],
-          pubkey: "AgSEjOuOr991QlHCORRmdE5ahVKeyBrmtgoYepCpQGOW",
-          gasLimit: 200000,
-          accountNumber: 1,
-          sequence: 1,
-          bodyBytes:
-            "0a90010a1c2f636f736d6f732e62616e6b2e763162657461312e4d736753656e6412700a2d636f736d6f7331706b707472653766646b6c366766727a6c65736a6a766878686c63337234676d6d6b38727336122d636f736d6f7331717970717870713971637273737a673270767871367273307a716733797963356c7a763778751a100a0575636f736d120731323334353637",
-          authInfoBytes:
-            "0a500a460a1f2f636f736d6f732e63727970746f2e736563703235366b312e5075624b657912230a21034f04181eeba35391b858633a765c4a0c189697b40d216354d50890d350c7029012040a020801180112130a0d0a0575636f736d12043230303010c09a0c",
-        };
-
-        // split chainId
-        const [namespace, reference] = chainId.split(":");
-
-        // format sign doc
-        const signDoc = formatDirectSignDoc(
-          inputs.fee,
-          inputs.pubkey,
-          inputs.gasLimit,
-          inputs.accountNumber,
-          inputs.sequence,
-          inputs.bodyBytes,
-          reference
-        );
-
-        // cosmos_signDirect params
-        const params = {
-          signerAddress: address,
-          signDoc: stringifySignDocValues(signDoc),
-        };
-
-        // send message
-        const result = await client!.request<{ signature: string }>({
-          topic: session!.topic,
-          chainId,
-          request: {
-            method: DEFAULT_COSMOS_METHODS.COSMOS_SIGN_DIRECT,
-            params,
-          },
-        });
-
-        const targetChainData = chainData[namespace][reference];
-
-        if (typeof targetChainData === "undefined") {
-          throw new Error(`Missing chain data for chainId: ${chainId}`);
-        }
-
-        const valid = await verifyDirectSignature(
-          address,
-          result.signature,
-          signDoc
-        );
-
-        // format displayed result
-        return {
-          method: DEFAULT_COSMOS_METHODS.COSMOS_SIGN_DIRECT,
-          address,
-          valid,
-          result: result.signature,
-        };
-      }
-    ),
-    testSignAmino: _createJsonRpcRequestHandler(
-      async (chainId: string, address: string) => {
-        // split chainId
-        const [namespace, reference] = chainId.split(":");
-
-        // test amino sign doc
-        const signDoc = {
-          msgs: [],
-          fee: { amount: [], gas: "23" },
-          chain_id: "foochain",
-          memo: "hello, world",
-          account_number: "7",
-          sequence: "54",
-        };
-
-        // cosmos_signAmino params
-        const params = { signerAddress: address, signDoc };
-
-        // send message
-        const result = await client!.request<{ signature: string }>({
-          topic: session!.topic,
-          chainId,
-          request: {
-            method: DEFAULT_COSMOS_METHODS.COSMOS_SIGN_AMINO,
-            params,
-          },
-        });
-
-        const targetChainData = chainData[namespace][reference];
-
-        if (typeof targetChainData === "undefined") {
-          throw new Error(`Missing chain data for chainId: ${chainId}`);
-        }
-
-        const valid = await verifyAminoSignature(
-          address,
-          result.signature,
-          signDoc
-        );
-
-        // format displayed result
-        return {
-          method: DEFAULT_COSMOS_METHODS.COSMOS_SIGN_AMINO,
-          address,
-          valid,
-          result: result.signature,
         };
       }
     ),
@@ -1314,7 +1183,6 @@ export function JsonRpcContextProvider({
       value={{
         ping,
         ethereumRpc,
-        cosmosRpc,
         solanaRpc,
         polkadotRpc,
         nearRpc,
