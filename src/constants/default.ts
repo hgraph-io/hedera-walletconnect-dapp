@@ -9,7 +9,6 @@ export const DEFAULT_MAIN_CHAINS = [
   "eip155:324",
   "eip155:42161",
   "eip155:42220",
-  "mvx:1",
 ];
 
 export const DEFAULT_TEST_CHAINS = [
@@ -20,7 +19,6 @@ export const DEFAULT_TEST_CHAINS = [
   "eip155:421611",
   "eip155:44787",
   "near:testnet",
-  "mvx:D",
 ];
 
 export const DEFAULT_CHAINS = [...DEFAULT_MAIN_CHAINS, ...DEFAULT_TEST_CHAINS];
