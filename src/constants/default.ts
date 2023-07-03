@@ -10,6 +10,7 @@ export const DEFAULT_TEST_CHAINS = [
   // testnets
   "eip155:5",
   "near:testnet",
+  "hedera:testnet",
 ];
 
 export const DEFAULT_CHAINS = [...DEFAULT_MAIN_CHAINS, ...DEFAULT_TEST_CHAINS];
@@ -58,6 +59,15 @@ export enum DEFAULT_NEAR_METHODS {
 }
 
 export enum DEFAULT_NEAR_EVENTS {}
+
+/**
+ * Hedera
+ */
+export enum DEFAULT_HEDERA_METHODS {
+  HEDERA_SIGN_AND_SEND_TRANSACTION = "hedera_signAndSendTransaction",
+}
+
+export enum DEFAULT_HEDERA_EVENTS {}
 
 export const DEFAULT_GITHUB_REPO_URL =
   "https://github.com/WalletConnect/web-examples/tree/main/dapps/react-dapp-v2";
