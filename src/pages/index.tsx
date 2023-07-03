@@ -15,7 +15,6 @@ import {
   DEFAULT_MULTIVERSX_METHODS,
   DEFAULT_TEST_CHAINS,
   DEFAULT_NEAR_METHODS,
-  DEFAULT_TRON_METHODS,
   DEFAULT_TEZOS_METHODS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
 } from "../constants";
@@ -74,7 +73,6 @@ const Home: NextPage = () => {
     polkadotRpc,
     nearRpc,
     multiversxRpc,
-    tronRpc,
     tezosRpc,
     isRpcRequestPending,
     rpcResult,
@@ -278,27 +276,6 @@ const Home: NextPage = () => {
     ];
   };
 
-  const getTronActions = (): AccountAction[] => {
-    const onSignTransaction = async (chainId: string, address: string) => {
-      openRequestModal();
-      await tronRpc.testSignTransaction(chainId, address);
-    };
-    const onSignMessage = async (chainId: string, address: string) => {
-      openRequestModal();
-      await tronRpc.testSignMessage(chainId, address);
-    };
-    return [
-      {
-        method: DEFAULT_TRON_METHODS.TRON_SIGN_TRANSACTION,
-        callback: onSignTransaction,
-      },
-      {
-        method: DEFAULT_TRON_METHODS.TRON_SIGN_MESSAGE,
-        callback: onSignMessage,
-      },
-    ];
-  };
-
   const getTezosActions = (): AccountAction[] => {
     const onGetAccounts = async (chainId: string, address: string) => {
       openRequestModal();
@@ -341,8 +318,6 @@ const Home: NextPage = () => {
         return getNearActions();
       case "mvx":
         return getMultiversxActions();
-      case "tron":
-        return getTronActions();
       case "tezos":
         return getTezosActions();
       default:
