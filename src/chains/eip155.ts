@@ -13,7 +13,6 @@ import { BLOCKCHAIN_LOGO_BASE_URL } from "../constants";
 export const EIP155Colors = {
   ethereum: "99, 125, 234",
   goerli: "189, 174, 155",
-  arbitrum: "44, 55, 75",
 };
 
 export const EIP155ChainData: ChainsMap = {
@@ -38,20 +37,6 @@ export const EIP155ChainData: ChainsMap = {
     slip44: 60,
     testnet: true,
   },
-  "42161": {
-    name: "Arbitrum One",
-    id: "eip155:42161",
-    rpc: ["https://arb1.arbitrum.io/rpc"],
-    slip44: 60,
-    testnet: false,
-  },
-  "421611": {
-    name: "Arbitrum Rinkeby",
-    id: "eip155:421611",
-    rpc: ["https://rinkeby.arbitrum.io/rpc"],
-    slip44: 60,
-    testnet: true,
-  },
 };
 
 export const EIP155Metadata: NamespaceMetadata = {
@@ -67,15 +52,6 @@ export const EIP155Metadata: NamespaceMetadata = {
   "42": {
     logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:42.png",
     rgb: EIP155Colors.ethereum,
-  },
-  "42161": {
-    name: "Arbitrum",
-    logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:42161.png",
-    rgb: EIP155Colors.arbitrum,
-  },
-  "421611": {
-    logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:421611.png",
-    rgb: EIP155Colors.arbitrum,
   },
 };
 export function getChainMetadata(chainId: string): ChainMetadata {

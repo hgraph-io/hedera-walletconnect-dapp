@@ -18,22 +18,6 @@ export const rpcProvidersByChainId: Record<number, any> = {
       symbol: "ETH",
     },
   },
-  42161: {
-    name: "Arbitrum",
-    baseURL: "https://arb1.arbitrum.io/rpc",
-    token: {
-      name: "Ether",
-      symbol: "ETH",
-    },
-  },
-  421611: {
-    name: "Arbitrum Rinkeby",
-    baseURL: "https://rinkeby.arbitrum.io/rpc",
-    token: {
-      name: "Ether",
-      symbol: "ETH",
-    },
-  },
 };
 
 const api: AxiosInstance = axios.create({
