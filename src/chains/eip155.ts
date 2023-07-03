@@ -14,7 +14,6 @@ export const EIP155Colors = {
   ethereum: "99, 125, 234",
   optimism: "233, 1, 1",
   goerli: "189, 174, 155",
-  xdai: "73, 169, 166",
   zksync: "90, 90, 90",
   arbitrum: "44, 55, 75",
 };
@@ -54,13 +53,6 @@ export const EIP155ChainData: ChainsMap = {
     rpc: ["https://kovan.optimism.io"],
     slip44: 60,
     testnet: true,
-  },
-  "100": {
-    name: "xDAI",
-    id: "eip155:100",
-    rpc: ["https://dai.poa.network"],
-    slip44: 60,
-    testnet: false,
   },
   "280": {
     name: "zkSync Era Testnet",
@@ -121,10 +113,6 @@ export const EIP155Metadata: NamespaceMetadata = {
   "420": {
     logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:420.png",
     rgb: EIP155Colors.optimism,
-  },
-  "100": {
-    logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:100.png",
-    rgb: EIP155Colors.xdai,
   },
   "280": {
     name: "zkSync Era Testnet",

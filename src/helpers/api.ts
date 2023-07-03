@@ -66,14 +66,6 @@ export const rpcProvidersByChainId: Record<number, any> = {
       symbol: "ETH",
     },
   },
-  100: {
-    name: "xDAI",
-    baseURL: "https://xdai-archive.blockscout.com",
-    token: {
-      name: "xDAI",
-      symbol: "xDAI",
-    },
-  },
 };
 
 const api: AxiosInstance = axios.create({
