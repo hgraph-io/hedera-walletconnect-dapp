@@ -30,13 +30,6 @@ export const EIP155ChainData: ChainsMap = {
     slip44: 60,
     testnet: true,
   },
-  "42": {
-    name: "Ethereum Kovan",
-    id: "eip155:42",
-    rpc: ["https://kovan.poa.network"],
-    slip44: 60,
-    testnet: true,
-  },
 };
 
 export const EIP155Metadata: NamespaceMetadata = {
@@ -47,10 +40,6 @@ export const EIP155Metadata: NamespaceMetadata = {
   },
   "5": {
     logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:1.png",
-    rgb: EIP155Colors.ethereum,
-  },
-  "42": {
-    logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:42.png",
     rgb: EIP155Colors.ethereum,
   },
 };

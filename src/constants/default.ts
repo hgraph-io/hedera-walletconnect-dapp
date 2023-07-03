@@ -4,13 +4,11 @@ if (!process.env.NEXT_PUBLIC_PROJECT_ID)
 export const DEFAULT_MAIN_CHAINS = [
   // mainnets
   "eip155:1",
-  "eip155:42220",
 ];
 
 export const DEFAULT_TEST_CHAINS = [
   // testnets
   "eip155:5",
-  "eip155:44787",
   "near:testnet",
 ];
 
