@@ -7,7 +7,6 @@ import {
 } from "react";
 import { SolanaChainData } from "../chains/solana";
 import { PolkadotChainData } from "../chains/polkadot";
-import { MultiversxChainData } from "../chains/multiversx";
 
 import { ChainNamespaces, ChainsMap, getAllChainNamespaces } from "../helpers";
 import { NearChainData } from "../chains/near";
@@ -51,9 +50,6 @@ export function ChainDataContextProvider({
             break;
           case "near":
             chains = NearChainData;
-            break;
-          case "mvx":
-            chains = MultiversxChainData;
             break;
           case "eip155":
             chains = EIP155ChainData;

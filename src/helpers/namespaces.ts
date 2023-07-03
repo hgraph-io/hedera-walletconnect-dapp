@@ -8,8 +8,6 @@ import {
   DEFAULT_POLKADOT_METHODS,
   DEFAULT_NEAR_METHODS,
   DEFAULT_NEAR_EVENTS,
-  DEFAULT_MULTIVERSX_EVENTS,
-  DEFAULT_MULTIVERSX_METHODS,
   DEFAULT_TEZOS_METHODS,
   DEFAULT_TEZOS_EVENTS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
@@ -37,8 +35,6 @@ export const getSupportedRequiredMethodsByNamespace = (namespace: string) => {
       return Object.values(DEFAULT_POLKADOT_METHODS);
     case "near":
       return Object.values(DEFAULT_NEAR_METHODS);
-    case "mvx":
-      return Object.values(DEFAULT_MULTIVERSX_METHODS);
     case "tezos":
       return Object.values(DEFAULT_TEZOS_METHODS);
     default:
@@ -75,8 +71,6 @@ export const getSupportedEventsByNamespace = (namespace: string) => {
       return Object.values(DEFAULT_POLKADOT_EVENTS);
     case "near":
       return Object.values(DEFAULT_NEAR_EVENTS);
-    case "mvx":
-      return Object.values(DEFAULT_MULTIVERSX_EVENTS);
     case "tezos":
       return Object.values(DEFAULT_TEZOS_EVENTS);
     default:
