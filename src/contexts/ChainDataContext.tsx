@@ -8,7 +8,6 @@ import {
 import { SolanaChainData } from "../chains/solana";
 import { PolkadotChainData } from "../chains/polkadot";
 import { MultiversxChainData } from "../chains/multiversx";
-import { TronChainData } from "../chains/tron";
 
 import { ChainNamespaces, ChainsMap, getAllChainNamespaces } from "../helpers";
 import { NearChainData } from "../chains/near";
@@ -55,9 +54,6 @@ export function ChainDataContextProvider({
             break;
           case "mvx":
             chains = MultiversxChainData;
-            break;
-          case "tron":
-            chains = TronChainData;
             break;
           case "eip155":
             chains = EIP155ChainData;

@@ -10,8 +10,6 @@ import {
   DEFAULT_NEAR_EVENTS,
   DEFAULT_MULTIVERSX_EVENTS,
   DEFAULT_MULTIVERSX_METHODS,
-  DEFAULT_TRON_METHODS,
-  DEFAULT_TRON_EVENTS,
   DEFAULT_TEZOS_METHODS,
   DEFAULT_TEZOS_EVENTS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
@@ -41,8 +39,6 @@ export const getSupportedRequiredMethodsByNamespace = (namespace: string) => {
       return Object.values(DEFAULT_NEAR_METHODS);
     case "mvx":
       return Object.values(DEFAULT_MULTIVERSX_METHODS);
-    case "tron":
-      return Object.values(DEFAULT_TRON_METHODS);
     case "tezos":
       return Object.values(DEFAULT_TEZOS_METHODS);
     default:
@@ -60,7 +56,6 @@ export const getSupportedOptionalMethodsByNamespace = (namespace: string) => {
     case "polkadot":
     case "near":
     case "mvx":
-    case "tron":
     case "tezos":
       return [];
     default:
@@ -82,8 +77,6 @@ export const getSupportedEventsByNamespace = (namespace: string) => {
       return Object.values(DEFAULT_NEAR_EVENTS);
     case "mvx":
       return Object.values(DEFAULT_MULTIVERSX_EVENTS);
-    case "tron":
-      return Object.values(DEFAULT_TRON_EVENTS);
     case "tezos":
       return Object.values(DEFAULT_TEZOS_EVENTS);
     default:

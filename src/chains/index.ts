@@ -5,7 +5,6 @@ import * as polkadot from "./polkadot";
 import * as solana from "./solana";
 import * as near from "./near";
 import * as multiversx from "./multiversx";
-import * as tron from "./tron";
 import * as tezos from "./tezos";
 
 import { ChainMetadata, ChainRequestRender } from "../helpers";
@@ -23,8 +22,6 @@ export function getChainMetadata(chainId: string): ChainMetadata {
       return near.getChainMetadata(chainId);
     case "mvx":
       return multiversx.getChainMetadata(chainId);
-    case "tron":
-      return tron.getChainMetadata(chainId);
     case "tezos":
       return tezos.getChainMetadata(chainId);
     default:
