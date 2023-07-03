@@ -4,8 +4,6 @@ import {
   DEFAULT_EIP_155_EVENTS,
   DEFAULT_NEAR_METHODS,
   DEFAULT_NEAR_EVENTS,
-  DEFAULT_TEZOS_METHODS,
-  DEFAULT_TEZOS_EVENTS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
 } from "../constants";
 
@@ -27,8 +25,6 @@ export const getSupportedRequiredMethodsByNamespace = (namespace: string) => {
       return Object.values(DEFAULT_EIP155_METHODS);
     case "near":
       return Object.values(DEFAULT_NEAR_METHODS);
-    case "tezos":
-      return Object.values(DEFAULT_TEZOS_METHODS);
     default:
       throw new Error(
         `No default required methods for namespace: ${namespace}`
@@ -42,7 +38,6 @@ export const getSupportedOptionalMethodsByNamespace = (namespace: string) => {
       return Object.values(DEFAULT_EIP155_OPTIONAL_METHODS);
     case "near":
     case "mvx":
-    case "tezos":
       return [];
     default:
       throw new Error(
@@ -57,8 +52,6 @@ export const getSupportedEventsByNamespace = (namespace: string) => {
       return Object.values(DEFAULT_EIP_155_EVENTS);
     case "near":
       return Object.values(DEFAULT_NEAR_EVENTS);
-    case "tezos":
-      return Object.values(DEFAULT_TEZOS_EVENTS);
     default:
       throw new Error(`No default events for namespace: ${namespace}`);
   }

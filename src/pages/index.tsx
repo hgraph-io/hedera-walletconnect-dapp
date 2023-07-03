@@ -12,7 +12,6 @@ import {
   DEFAULT_MAIN_CHAINS,
   DEFAULT_TEST_CHAINS,
   DEFAULT_NEAR_METHODS,
-  DEFAULT_TEZOS_METHODS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
 } from "../constants";
 import { AccountAction, setLocaleStorageTestnetFlag } from "../helpers";
@@ -67,7 +66,6 @@ const Home: NextPage = () => {
     ping,
     ethereumRpc,
     nearRpc,
-    tezosRpc,
     isRpcRequestPending,
     rpcResult,
     isTestnet,
@@ -199,35 +197,6 @@ const Home: NextPage = () => {
     ];
   };
 
-  const getTezosActions = (): AccountAction[] => {
-    const onGetAccounts = async (chainId: string, address: string) => {
-      openRequestModal();
-      await tezosRpc.testGetAccounts(chainId, address);
-    };
-    const onSignTransaction = async (chainId: string, address: string) => {
-      openRequestModal();
-      await tezosRpc.testSignTransaction(chainId, address);
-    };
-    const onSignMessage = async (chainId: string, address: string) => {
-      openRequestModal();
-      await tezosRpc.testSignMessage(chainId, address);
-    };
-    return [
-      {
-        method: DEFAULT_TEZOS_METHODS.TEZOS_GET_ACCOUNTS,
-        callback: onGetAccounts,
-      },
-      {
-        method: DEFAULT_TEZOS_METHODS.TEZOS_SEND,
-        callback: onSignTransaction,
-      },
-      {
-        method: DEFAULT_TEZOS_METHODS.TEZOS_SIGN,
-        callback: onSignMessage,
-      },
-    ];
-  };
-
   const getBlockchainActions = (chainId: string) => {
     const [namespace] = chainId.split(":");
     switch (namespace) {
@@ -235,8 +204,6 @@ const Home: NextPage = () => {
         return getEthereumActions();
       case "near":
         return getNearActions();
-      case "tezos":
-        return getTezosActions();
       default:
         break;
     }

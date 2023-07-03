@@ -11,7 +11,6 @@ export const DEFAULT_MAIN_CHAINS = [
   "eip155:42161",
   "eip155:42220",
   "mvx:1",
-  "tezos:mainnet",
 ];
 
 export const DEFAULT_TEST_CHAINS = [
@@ -24,7 +23,6 @@ export const DEFAULT_TEST_CHAINS = [
   "eip155:44787",
   "near:testnet",
   "mvx:D",
-  "tezos:testnet",
 ];
 
 export const DEFAULT_CHAINS = [...DEFAULT_MAIN_CHAINS, ...DEFAULT_TEST_CHAINS];
@@ -73,17 +71,6 @@ export enum DEFAULT_NEAR_METHODS {
 }
 
 export enum DEFAULT_NEAR_EVENTS {}
-
-/**
- * TEZOS
- */
-export enum DEFAULT_TEZOS_METHODS {
-  TEZOS_GET_ACCOUNTS = "tezos_getAccounts",
-  TEZOS_SEND = "tezos_send",
-  TEZOS_SIGN = "tezos_sign",
-}
-
-export enum DEFAULT_TEZOS_EVENTS {}
 
 export const DEFAULT_GITHUB_REPO_URL =
   "https://github.com/WalletConnect/web-examples/tree/main/dapps/react-dapp-v2";
