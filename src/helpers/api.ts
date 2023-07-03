@@ -90,22 +90,6 @@ export const rpcProvidersByChainId: Record<number, any> = {
       symbol: "xDAI",
     },
   },
-  42220: {
-    name: "Celo",
-    baseURL: "https://forno.celo.org",
-    token: {
-      name: "CELO",
-      symbol: "CELO",
-    },
-  },
-  44787: {
-    name: "Celo",
-    baseURL: "https://alfajores-forno.celo-testnet.org",
-    token: {
-      name: "CELO",
-      symbol: "CELO",
-    },
-  },
 };
 
 const api: AxiosInstance = axios.create({

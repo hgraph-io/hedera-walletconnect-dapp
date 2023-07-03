@@ -17,7 +17,6 @@ export const EIP155Colors = {
   xdai: "73, 169, 166",
   polygon: "130, 71, 229",
   zksync: "90, 90, 90",
-  celo: "60, 203, 132",
   arbitrum: "44, 55, 75",
 };
 
@@ -99,20 +98,6 @@ export const EIP155ChainData: ChainsMap = {
     slip44: 60,
     testnet: false,
   },
-  "42220": {
-    name: "Celo Mainnet",
-    id: "eip155:42220",
-    rpc: ["https://forno.celo.org"],
-    slip44: 52752,
-    testnet: false,
-  },
-  "44787": {
-    name: "Celo Alfajores",
-    id: "eip155:44787",
-    rpc: ["https://alfajores-forno.celo-testnet.org"],
-    slip44: 52752,
-    testnet: true,
-  },
   "80001": {
     name: "Polygon Mumbai",
     id: "eip155:80001",
@@ -179,15 +164,6 @@ export const EIP155Metadata: NamespaceMetadata = {
     name: "Arbitrum",
     logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:42161.png",
     rgb: EIP155Colors.arbitrum,
-  },
-  "42220": {
-    name: "Celo",
-    logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:42220.png",
-    rgb: EIP155Colors.celo,
-  },
-  "44787": {
-    logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:44787.png",
-    rgb: EIP155Colors.celo,
   },
   "421611": {
     logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:421611.png",
