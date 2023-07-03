@@ -2,8 +2,6 @@ import { ProposalTypes } from "@walletconnect/types";
 import {
   DEFAULT_EIP155_METHODS,
   DEFAULT_EIP_155_EVENTS,
-  DEFAULT_SOLANA_EVENTS,
-  DEFAULT_SOLANA_METHODS,
   DEFAULT_NEAR_METHODS,
   DEFAULT_NEAR_EVENTS,
   DEFAULT_TEZOS_METHODS,
@@ -27,8 +25,6 @@ export const getSupportedRequiredMethodsByNamespace = (namespace: string) => {
   switch (namespace) {
     case "eip155":
       return Object.values(DEFAULT_EIP155_METHODS);
-    case "solana":
-      return Object.values(DEFAULT_SOLANA_METHODS);
     case "near":
       return Object.values(DEFAULT_NEAR_METHODS);
     case "tezos":
@@ -44,7 +40,6 @@ export const getSupportedOptionalMethodsByNamespace = (namespace: string) => {
   switch (namespace) {
     case "eip155":
       return Object.values(DEFAULT_EIP155_OPTIONAL_METHODS);
-    case "solana":
     case "near":
     case "mvx":
     case "tezos":
@@ -60,8 +55,6 @@ export const getSupportedEventsByNamespace = (namespace: string) => {
   switch (namespace) {
     case "eip155":
       return Object.values(DEFAULT_EIP_155_EVENTS);
-    case "solana":
-      return Object.values(DEFAULT_SOLANA_EVENTS);
     case "near":
       return Object.values(DEFAULT_NEAR_EVENTS);
     case "tezos":

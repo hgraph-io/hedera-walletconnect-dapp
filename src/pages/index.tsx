@@ -10,7 +10,6 @@ import Modal from "../components/Modal";
 import {
   DEFAULT_EIP155_METHODS,
   DEFAULT_MAIN_CHAINS,
-  DEFAULT_SOLANA_METHODS,
   DEFAULT_TEST_CHAINS,
   DEFAULT_NEAR_METHODS,
   DEFAULT_TEZOS_METHODS,
@@ -67,7 +66,6 @@ const Home: NextPage = () => {
   const {
     ping,
     ethereumRpc,
-    solanaRpc,
     nearRpc,
     tezosRpc,
     isRpcRequestPending,
@@ -174,27 +172,6 @@ const Home: NextPage = () => {
     return availableActions;
   };
 
-  const getSolanaActions = (): AccountAction[] => {
-    const onSignTransaction = async (chainId: string, address: string) => {
-      openRequestModal();
-      await solanaRpc.testSignTransaction(chainId, address);
-    };
-    const onSignMessage = async (chainId: string, address: string) => {
-      openRequestModal();
-      await solanaRpc.testSignMessage(chainId, address);
-    };
-    return [
-      {
-        method: DEFAULT_SOLANA_METHODS.SOL_SIGN_TRANSACTION,
-        callback: onSignTransaction,
-      },
-      {
-        method: DEFAULT_SOLANA_METHODS.SOL_SIGN_MESSAGE,
-        callback: onSignMessage,
-      },
-    ];
-  };
-
   const getNearActions = (): AccountAction[] => {
     const onSignAndSendTransaction = async (
       chainId: string,
@@ -256,8 +233,6 @@ const Home: NextPage = () => {
     switch (namespace) {
       case "eip155":
         return getEthereumActions();
-      case "solana":
-        return getSolanaActions();
       case "near":
         return getNearActions();
       case "tezos":
