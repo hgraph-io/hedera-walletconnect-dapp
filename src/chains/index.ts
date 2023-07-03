@@ -2,7 +2,6 @@ import { JsonRpcRequest } from "@walletconnect/jsonrpc-utils";
 
 import * as eip155 from "./eip155";
 import * as near from "./near";
-import * as tezos from "./tezos";
 
 import { ChainMetadata, ChainRequestRender } from "../helpers";
 
@@ -13,8 +12,6 @@ export function getChainMetadata(chainId: string): ChainMetadata {
       return eip155.getChainMetadata(chainId);
     case "near":
       return near.getChainMetadata(chainId);
-    case "tezos":
-      return tezos.getChainMetadata(chainId);
     default:
       throw new Error(`No metadata handler for namespace ${namespace}`);
   }
@@ -30,8 +27,6 @@ export function getChainRequestRender(
       return eip155.getChainRequestRender(request);
     case "near":
       return near.getChainRequestRender(request);
-    case "tezos":
-      return tezos.getChainRequestRender(request);
     default:
       throw new Error(`No render handler for namespace ${namespace}`);
   }
