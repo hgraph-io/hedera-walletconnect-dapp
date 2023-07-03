@@ -13,7 +13,6 @@ import { BLOCKCHAIN_LOGO_BASE_URL } from "../constants";
 export const EIP155Colors = {
   ethereum: "99, 125, 234",
   goerli: "189, 174, 155",
-  zksync: "90, 90, 90",
   arbitrum: "44, 55, 75",
 };
 
@@ -38,20 +37,6 @@ export const EIP155ChainData: ChainsMap = {
     rpc: ["https://kovan.poa.network"],
     slip44: 60,
     testnet: true,
-  },
-  "280": {
-    name: "zkSync Era Testnet",
-    id: "eip155:280",
-    rpc: ["https://testnet.era.zksync.dev"],
-    slip44: 60,
-    testnet: true,
-  },
-  "324": {
-    name: "zkSync Era",
-    id: "eip155:324",
-    rpc: ["https://mainnet.era.zksync.io"],
-    slip44: 60,
-    testnet: false,
   },
   "42161": {
     name: "Arbitrum One",
@@ -82,16 +67,6 @@ export const EIP155Metadata: NamespaceMetadata = {
   "42": {
     logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:42.png",
     rgb: EIP155Colors.ethereum,
-  },
-  "280": {
-    name: "zkSync Era Testnet",
-    logo: "/assets/eip155-324.svg",
-    rgb: EIP155Colors.zksync,
-  },
-  "324": {
-    name: "zkSync Era",
-    logo: "/assets/eip155-324.svg",
-    rgb: EIP155Colors.zksync,
   },
   "42161": {
     name: "Arbitrum",

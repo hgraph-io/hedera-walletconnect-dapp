@@ -18,22 +18,6 @@ export const rpcProvidersByChainId: Record<number, any> = {
       symbol: "ETH",
     },
   },
-  280: {
-    name: "zkSync Era Testnet",
-    baseURL: "https://testnet.era.zksync.dev",
-    token: {
-      name: "Ether",
-      symbol: "ETH",
-    },
-  },
-  324: {
-    name: "zkSync Era",
-    baseURL: "https://mainnet.era.zksync.io",
-    token: {
-      name: "Ether",
-      symbol: "ETH",
-    },
-  },
   42161: {
     name: "Arbitrum",
     baseURL: "https://arb1.arbitrum.io/rpc",
