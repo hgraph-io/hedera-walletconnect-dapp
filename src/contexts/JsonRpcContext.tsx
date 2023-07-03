@@ -4,14 +4,6 @@ import * as encoding from "@walletconnect/encoding";
 import { Transaction as EthTransaction } from "@ethereumjs/tx";
 import { recoverTransaction } from "@celo/wallet-base";
 import bs58 from "bs58";
-import { verifyMessageSignature } from "solana-wallet";
-import {
-  Connection,
-  Keypair,
-  SystemProgram,
-  Transaction as SolanaTransaction,
-  clusterApiUrl,
-} from "@solana/web3.js";
 import {
   eip712,
   formatTestTransaction,
@@ -24,7 +16,6 @@ import {
 import { useWalletConnectClient } from "./ClientContext";
 import {
   DEFAULT_EIP155_METHODS,
-  DEFAULT_SOLANA_METHODS,
   DEFAULT_NEAR_METHODS,
   DEFAULT_TEZOS_METHODS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
@@ -53,10 +44,6 @@ interface IContext {
     testSignPersonalMessage: TRpcRequestCallback;
     testSignTypedData: TRpcRequestCallback;
     testSignTypedDatav4: TRpcRequestCallback;
-  };
-  solanaRpc: {
-    testSignMessage: TRpcRequestCallback;
-    testSignTransaction: TRpcRequestCallback;
   };
   nearRpc: {
     testSignAndSendTransaction: TRpcRequestCallback;
@@ -90,8 +77,7 @@ export function JsonRpcContextProvider({
   const [result, setResult] = useState<IFormattedRpcResponse | null>();
   const [isTestnet, setIsTestnet] = useState(getLocalStorageTestnetFlag());
 
-  const { client, session, accounts, balances, solanaPublicKeys } =
-    useWalletConnectClient();
+  const { client, session, accounts, balances } = useWalletConnectClient();
 
   const { chainData } = useChainData();
 
@@ -437,132 +423,6 @@ export function JsonRpcContextProvider({
     ),
   };
 
-  // -------- SOLANA RPC METHODS --------
-
-  const solanaRpc = {
-    testSignTransaction: _createJsonRpcRequestHandler(
-      async (
-        chainId: string,
-        address: string
-      ): Promise<IFormattedRpcResponse> => {
-        if (!solanaPublicKeys) {
-          throw new Error("Could not find Solana PublicKeys.");
-        }
-
-        const senderPublicKey = solanaPublicKeys[address];
-
-        // rpc.walletconnect.com doesn't support solana testnet yet
-        const connection = new Connection(
-          isTestnet ? clusterApiUrl("testnet") : getProviderUrl(chainId)
-        );
-
-        // Using deprecated `getRecentBlockhash` over `getLatestBlockhash` here, since `mainnet-beta`
-        // cluster only seems to support `connection.getRecentBlockhash` currently.
-        const { blockhash } = await connection.getRecentBlockhash();
-
-        const transaction = new SolanaTransaction({
-          feePayer: senderPublicKey,
-          recentBlockhash: blockhash,
-        }).add(
-          SystemProgram.transfer({
-            fromPubkey: senderPublicKey,
-            toPubkey: Keypair.generate().publicKey,
-            lamports: 1,
-          })
-        );
-
-        try {
-          const result = await client!.request<{ signature: string }>({
-            chainId,
-            topic: session!.topic,
-            request: {
-              method: DEFAULT_SOLANA_METHODS.SOL_SIGN_TRANSACTION,
-              params: {
-                feePayer: transaction.feePayer!.toBase58(),
-                recentBlockhash: transaction.recentBlockhash,
-                instructions: transaction.instructions.map((i) => ({
-                  programId: i.programId.toBase58(),
-                  data: Array.from(i.data),
-                  keys: i.keys.map((k) => ({
-                    isSigner: k.isSigner,
-                    isWritable: k.isWritable,
-                    pubkey: k.pubkey.toBase58(),
-                  })),
-                })),
-              },
-            },
-          });
-
-          // We only need `Buffer.from` here to satisfy the `Buffer` param type for `addSignature`.
-          // The resulting `UInt8Array` is equivalent to just `bs58.decode(...)`.
-          transaction.addSignature(
-            senderPublicKey,
-            Buffer.from(bs58.decode(result.signature))
-          );
-
-          const valid = transaction.verifySignatures();
-
-          return {
-            method: DEFAULT_SOLANA_METHODS.SOL_SIGN_TRANSACTION,
-            address,
-            valid,
-            result: result.signature,
-          };
-        } catch (error: any) {
-          throw new Error(error);
-        }
-      }
-    ),
-    testSignMessage: _createJsonRpcRequestHandler(
-      async (
-        chainId: string,
-        address: string
-      ): Promise<IFormattedRpcResponse> => {
-        if (!solanaPublicKeys) {
-          throw new Error("Could not find Solana PublicKeys.");
-        }
-
-        const senderPublicKey = solanaPublicKeys[address];
-
-        // Encode message to `UInt8Array` first via `TextEncoder` so we can pass it to `bs58.encode`.
-        const message = bs58.encode(
-          new TextEncoder().encode(
-            `This is an example message to be signed - ${Date.now()}`
-          )
-        );
-
-        try {
-          const result = await client!.request<{ signature: string }>({
-            chainId,
-            topic: session!.topic,
-            request: {
-              method: DEFAULT_SOLANA_METHODS.SOL_SIGN_MESSAGE,
-              params: {
-                pubkey: senderPublicKey.toBase58(),
-                message,
-              },
-            },
-          });
-
-          const valid = verifyMessageSignature(
-            senderPublicKey.toBase58(),
-            result.signature,
-            message
-          );
-
-          return {
-            method: DEFAULT_SOLANA_METHODS.SOL_SIGN_MESSAGE,
-            address,
-            valid,
-            result: result.signature,
-          };
-        } catch (error: any) {
-          throw new Error(error);
-        }
-      }
-    ),
-  };
-
   // -------- NEAR RPC METHODS --------
 
   const nearRpc = {
@@ -767,7 +627,6 @@ export function JsonRpcContextProvider({
       value={{
         ping,
         ethereumRpc,
-        solanaRpc,
         nearRpc,
         tezosRpc,
         rpcResult: result,

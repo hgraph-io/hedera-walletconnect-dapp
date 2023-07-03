@@ -10,7 +10,6 @@ export const DEFAULT_MAIN_CHAINS = [
   "eip155:324",
   "eip155:42161",
   "eip155:42220",
-  "solana:4sGjMW1sUnHzSxGspuhpqLDx6wiyjNtZ",
   "mvx:1",
   "tezos:mainnet",
 ];
@@ -23,7 +22,6 @@ export const DEFAULT_TEST_CHAINS = [
   "eip155:80001",
   "eip155:421611",
   "eip155:44787",
-  "solana:8E9rvCKLFQia2Y35HXjjpWzj8weVo44K",
   "near:testnet",
   "mvx:D",
   "tezos:testnet",
@@ -62,16 +60,6 @@ export enum DEFAULT_EIP_155_EVENTS {
   ETH_CHAIN_CHANGED = "chainChanged",
   ETH_ACCOUNTS_CHANGED = "accountsChanged",
 }
-
-/**
- * SOLANA
- */
-export enum DEFAULT_SOLANA_METHODS {
-  SOL_SIGN_TRANSACTION = "solana_signTransaction",
-  SOL_SIGN_MESSAGE = "solana_signMessage",
-}
-
-export enum DEFAULT_SOLANA_EVENTS {}
 
 /**
  * NEAR

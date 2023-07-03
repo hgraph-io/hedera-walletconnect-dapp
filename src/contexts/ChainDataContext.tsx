@@ -5,7 +5,6 @@ import {
   useEffect,
   useState,
 } from "react";
-import { SolanaChainData } from "../chains/solana";
 
 import { ChainNamespaces, ChainsMap, getAllChainNamespaces } from "../helpers";
 import { NearChainData } from "../chains/near";
@@ -41,9 +40,6 @@ export function ChainDataContextProvider({
       namespaces.map(async (namespace) => {
         let chains: ChainsMap | undefined;
         switch (namespace) {
-          case "solana":
-            chains = SolanaChainData;
-            break;
           case "near":
             chains = NearChainData;
             break;
