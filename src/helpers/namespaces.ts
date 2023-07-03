@@ -37,7 +37,6 @@ export const getSupportedOptionalMethodsByNamespace = (namespace: string) => {
     case "eip155":
       return Object.values(DEFAULT_EIP155_OPTIONAL_METHODS);
     case "near":
-    case "mvx":
       return [];
     default:
       throw new Error(

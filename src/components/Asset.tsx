@@ -5,11 +5,6 @@ import Icon from "./Icon";
 
 import { AssetData, fromWad } from "../helpers";
 
-import { getChainMetadata } from "../chains";
-
-const xdai = getChainMetadata("eip155:100").logo;
-const matic = getChainMetadata("eip155:137").logo;
-
 const SAsset = styled.div`
   width: 100%;
   padding: 20px;
@@ -41,10 +36,6 @@ function getAssetIcon(asset: AssetData): JSX.Element {
   switch (asset.symbol.toLowerCase()) {
     case "eth":
       return <Icon src={"/assets/eth.svg"} />;
-    case "xdai":
-      return <Icon src={xdai} />;
-    case "matic":
-      return <Icon src={matic} />;
     default:
       return <Icon src={"/assets/eth20.svg"} />;
   }

@@ -10,7 +10,6 @@
     "prettier:write": "prettier --write '**/*.{js,ts,jsx,tsx}'"
   },
   "dependencies": {
-    "@celo/wallet-base": "^3.0.1",
     "@ethereumjs/tx": "^3.5.0",
     "@walletconnect/encoding": "^1.0.1",
     "@walletconnect/sign-client": "2.8.6",
