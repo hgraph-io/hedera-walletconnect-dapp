@@ -12,7 +12,6 @@ import { BLOCKCHAIN_LOGO_BASE_URL } from "../constants";
 
 export const EIP155Colors = {
   ethereum: "99, 125, 234",
-  optimism: "233, 1, 1",
   goerli: "189, 174, 155",
   zksync: "90, 90, 90",
   arbitrum: "44, 55, 75",
@@ -33,24 +32,10 @@ export const EIP155ChainData: ChainsMap = {
     slip44: 60,
     testnet: true,
   },
-  "10": {
-    name: "Optimism Mainnet",
-    id: "eip155:10",
-    rpc: ["https://mainnet.optimism.io"],
-    slip44: 60,
-    testnet: false,
-  },
   "42": {
     name: "Ethereum Kovan",
     id: "eip155:42",
     rpc: ["https://kovan.poa.network"],
-    slip44: 60,
-    testnet: true,
-  },
-  "69": {
-    name: "Optimism Kovan",
-    id: "eip155:69",
-    rpc: ["https://kovan.optimism.io"],
     slip44: 60,
     testnet: true,
   },
@@ -67,13 +52,6 @@ export const EIP155ChainData: ChainsMap = {
     rpc: ["https://mainnet.era.zksync.io"],
     slip44: 60,
     testnet: false,
-  },
-  "420": {
-    name: "Optimism Goerli",
-    id: "eip155:420",
-    rpc: ["https://goerli.optimism.io"],
-    slip44: 60,
-    testnet: true,
   },
   "42161": {
     name: "Arbitrum One",
@@ -101,18 +79,9 @@ export const EIP155Metadata: NamespaceMetadata = {
     logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:1.png",
     rgb: EIP155Colors.ethereum,
   },
-  "10": {
-    name: "Optimism",
-    logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:10.png",
-    rgb: EIP155Colors.optimism,
-  },
   "42": {
     logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:42.png",
     rgb: EIP155Colors.ethereum,
-  },
-  "420": {
-    logo: BLOCKCHAIN_LOGO_BASE_URL + "eip155:420.png",
-    rgb: EIP155Colors.optimism,
   },
   "280": {
     name: "zkSync Era Testnet",

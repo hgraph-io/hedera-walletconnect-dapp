@@ -34,22 +34,6 @@ export const rpcProvidersByChainId: Record<number, any> = {
       symbol: "ETH",
     },
   },
-  10: {
-    name: "Optimism",
-    baseURL: "https://mainnet.optimism.io",
-    token: {
-      name: "Ether",
-      symbol: "ETH",
-    },
-  },
-  420: {
-    name: "Optimism Goerli",
-    baseURL: "https://goerli.optimism.io",
-    token: {
-      name: "Ether",
-      symbol: "ETH",
-    },
-  },
   42161: {
     name: "Arbitrum",
     baseURL: "https://arb1.arbitrum.io/rpc",
