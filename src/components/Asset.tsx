@@ -42,8 +42,6 @@ function getAssetIcon(asset: AssetData): JSX.Element {
       return <Icon src={"/assets/eth.svg"} />;
     case "xdai":
       return <Icon src={xdai} />;
-    case "matic":
-      return <Icon src={matic} />;
     default:
       return <Icon src={"/assets/eth20.svg"} />;
   }
