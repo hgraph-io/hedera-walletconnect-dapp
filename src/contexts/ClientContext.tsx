@@ -98,6 +98,12 @@ export function ClientContextProvider({
           const [namespace, reference, address] = account.split(":");
           const chainId = `${namespace}:${reference}`;
           const assets = await apiGetAccountBalance(address, chainId);
+          console.log("*** ClientContext::getAccountBalances", {
+            namespace,
+            reference,
+            address,
+            assets,
+          });
           return { account, assets: [assets] };
         })
       );

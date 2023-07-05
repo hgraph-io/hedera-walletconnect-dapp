@@ -34,6 +34,25 @@ export async function apiGetAccountBalance(
   chainId: string
 ): Promise<AssetData> {
   const namespace = chainId.split(":")[0];
+  if (namespace === "hedera") {
+    const hederaApi: AxiosInstance = axios.create({
+      baseURL: "https://testnet.mirrornode.hedera.com/api/v1",
+      timeout: 10000, // 10 secs
+      headers: {
+        Accept: "application/json",
+        "Content-Type": "application/json",
+      },
+    });
+    const response = await hederaApi.get(`/accounts/${address}`);
+    const { data } = response;
+    console.log("***", data);
+
+    return {
+      balance: data.balance.balance,
+      name: "Hedera",
+      symbol: "HBAR",
+    };
+  }
   if (namespace !== "eip155") {
     return { balance: "", symbol: "", name: "" };
   }
