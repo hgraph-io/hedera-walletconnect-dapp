@@ -1,5 +1,12 @@
+import { JsonRpcRequest } from "@walletconnect/jsonrpc-utils";
+
 import { HEDERA_LOGO_URL } from "../constants";
-import { ChainMetadata, ChainsMap, NamespaceMetadata } from "../helpers";
+import {
+  NamespaceMetadata,
+  ChainMetadata,
+  ChainRequestRender,
+  ChainsMap,
+} from "../helpers";
 
 export const HederaMetadata: NamespaceMetadata = {
   testnet: {
@@ -25,4 +32,23 @@ export function getChainMetadata(chainId: string): ChainMetadata {
     throw new Error(`No chain metadata found for chainId: ${chainId}`);
   }
   return metadata;
+}
+
+export function getChainRequestRender(
+  request: JsonRpcRequest
+): ChainRequestRender[] {
+  let params = [{ label: "Method", value: request.method }];
+
+  switch (request.method) {
+    default:
+      params = [
+        ...params,
+        {
+          label: "params",
+          value: JSON.stringify(request.params, null, "\t"),
+        },
+      ];
+      break;
+  }
+  return params;
 }
