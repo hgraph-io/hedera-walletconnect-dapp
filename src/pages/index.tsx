@@ -12,6 +12,7 @@ import {
   DEFAULT_MAIN_CHAINS,
   DEFAULT_TEST_CHAINS,
   DEFAULT_NEAR_METHODS,
+  DEFAULT_HEDERA_METHODS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
 } from "../constants";
 import { AccountAction, setLocaleStorageTestnetFlag } from "../helpers";
@@ -197,6 +198,19 @@ const Home: NextPage = () => {
     ];
   };
 
+  const getHederaActions = (): AccountAction[] => {
+    return [
+      {
+        method: DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION,
+        callback: async (chainId: string, address: string) => {
+          console.log(chainId);
+          console.log(address);
+          openRequestModal();
+        },
+      },
+    ];
+  };
+
   const getBlockchainActions = (chainId: string) => {
     const [namespace] = chainId.split(":");
     switch (namespace) {
@@ -204,6 +218,8 @@ const Home: NextPage = () => {
         return getEthereumActions();
       case "near":
         return getNearActions();
+      case "hedera":
+        return getHederaActions();
       default:
         break;
     }
