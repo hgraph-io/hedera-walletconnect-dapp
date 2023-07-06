@@ -20,13 +20,22 @@ export const rpcProvidersByChainId: Record<number, any> = {
   },
 };
 
-const api: AxiosInstance = axios.create({
-  baseURL: "https://ethereum-api.xyz",
+const apiConfig = {
   timeout: 10000, // 10 secs
   headers: {
     Accept: "application/json",
     "Content-Type": "application/json",
   },
+};
+
+const api: AxiosInstance = axios.create({
+  ...apiConfig,
+  baseURL: "https://ethereum-api.xyz",
+});
+
+const hederaApi: AxiosInstance = axios.create({
+  ...apiConfig,
+  baseURL: "https://testnet.mirrornode.hedera.com/api/v1",
 });
 
 export async function apiGetAccountBalance(
@@ -35,22 +44,13 @@ export async function apiGetAccountBalance(
 ): Promise<AssetData> {
   const namespace = chainId.split(":")[0];
   if (namespace === "hedera") {
-    const hederaApi: AxiosInstance = axios.create({
-      baseURL: "https://testnet.mirrornode.hedera.com/api/v1",
-      timeout: 10000, // 10 secs
-      headers: {
-        Accept: "application/json",
-        "Content-Type": "application/json",
-      },
-    });
     const response = await hederaApi.get(`/accounts/${address}`);
     const { data } = response;
-    console.log("***", data);
-
+    const balance = data.balance.balance;
     return {
-      balance: data.balance.balance,
-      name: "Hedera",
-      symbol: "HBAR",
+      balance,
+      name: "HBar",
+      symbol: "ℏ",
     };
   }
   if (namespace !== "eip155") {
