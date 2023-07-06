@@ -33,11 +33,23 @@ function getAssetIcon(asset: AssetData): JSX.Element {
     const src = `https://raw.githubusercontent.com/TrustWallet/tokens/master/tokens/${asset.contractAddress.toLowerCase()}.png`;
     return <Icon src={src} fallback={"/assets/erc20.svg"} />;
   }
-  switch (asset.symbol.toLowerCase()) {
-    case "eth":
+  switch (asset.name.toLowerCase()) {
+    case "ether":
       return <Icon src={"/assets/eth.svg"} />;
+    case "hbar":
+      return <Icon src={"/assets/hedera-hbar-logo.png"} />;
     default:
-      return <Icon src={"/assets/eth20.svg"} />;
+      return <Icon src={"/assets/erc20.svg"} />;
+  }
+}
+
+function formatAssetBalance(asset: AssetData) {
+  if (!asset.balance) return "0";
+  switch (asset.name.toLowerCase()) {
+    case "ether":
+      return fromWad(asset.balance);
+    default:
+      return asset.balance;
   }
 }
 
@@ -54,7 +66,7 @@ const Asset = (props: AssetProps) => {
         <SAssetName>{asset.name}</SAssetName>
       </SAssetLeft>
       <SAssetRight>
-        <SAssetBalance>{`${fromWad(asset.balance || "0")} ${
+        <SAssetBalance>{`${formatAssetBalance(asset)} ${
           asset.symbol
         }`}</SAssetBalance>
       </SAssetRight>
