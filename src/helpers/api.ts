@@ -49,7 +49,7 @@ export async function apiGetAccountBalance(
     const balance = data.balance.balance;
     return {
       balance,
-      name: "HBar",
+      name: "HBAR",
       symbol: "ℏ",
     };
   }
