@@ -5,6 +5,8 @@ import {
   DEFAULT_NEAR_METHODS,
   DEFAULT_NEAR_EVENTS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
+  DEFAULT_HEDERA_METHODS,
+  DEFAULT_HEDERA_EVENTS,
 } from "../constants";
 
 export const getNamespacesFromChains = (chains: string[]) => {
@@ -25,6 +27,8 @@ export const getSupportedRequiredMethodsByNamespace = (namespace: string) => {
       return Object.values(DEFAULT_EIP155_METHODS);
     case "near":
       return Object.values(DEFAULT_NEAR_METHODS);
+    case "hedera":
+      return Object.values(DEFAULT_HEDERA_METHODS);
     default:
       throw new Error(
         `No default required methods for namespace: ${namespace}`
@@ -37,6 +41,7 @@ export const getSupportedOptionalMethodsByNamespace = (namespace: string) => {
     case "eip155":
       return Object.values(DEFAULT_EIP155_OPTIONAL_METHODS);
     case "near":
+    case "hedera":
       return [];
     default:
       throw new Error(
@@ -51,6 +56,8 @@ export const getSupportedEventsByNamespace = (namespace: string) => {
       return Object.values(DEFAULT_EIP_155_EVENTS);
     case "near":
       return Object.values(DEFAULT_NEAR_EVENTS);
+    case "hedera":
+      return Object.values(DEFAULT_HEDERA_EVENTS);
     default:
       throw new Error(`No default events for namespace: ${namespace}`);
   }

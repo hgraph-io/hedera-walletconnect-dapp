@@ -9,6 +9,7 @@ import {
 import { ChainNamespaces, ChainsMap, getAllChainNamespaces } from "../helpers";
 import { NearChainData } from "../chains/near";
 import { EIP155ChainData } from "../chains/eip155";
+import { HederaChainData } from "../chains/hedera";
 
 /**
  * Types
@@ -44,6 +45,9 @@ export function ChainDataContextProvider({
             break;
           case "eip155":
             chains = EIP155ChainData;
+            break;
+          case "hedera":
+            chains = HederaChainData;
             break;
           default:
             console.error("Unknown chain namespace: ", namespace);

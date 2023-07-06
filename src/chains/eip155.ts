@@ -43,6 +43,7 @@ export const EIP155Metadata: NamespaceMetadata = {
     rgb: EIP155Colors.ethereum,
   },
 };
+
 export function getChainMetadata(chainId: string): ChainMetadata {
   const reference = chainId.split(":")[1];
   const metadata = EIP155Metadata[reference];
