@@ -67,6 +67,7 @@ const Home: NextPage = () => {
     ping,
     ethereumRpc,
     nearRpc,
+    hederaRpc,
     isRpcRequestPending,
     rpcResult,
     isTestnet,
@@ -199,14 +200,17 @@ const Home: NextPage = () => {
   };
 
   const getHederaActions = (): AccountAction[] => {
+    const onSignAndSendTransaction = async (
+      chainId: string,
+      address: string
+    ) => {
+      openRequestModal();
+      await hederaRpc.testSignAndSendTransaction(chainId, address);
+    };
     return [
       {
         method: DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION,
-        callback: async (chainId: string, address: string) => {
-          console.log(chainId);
-          console.log(address);
-          openRequestModal();
-        },
+        callback: onSignAndSendTransaction,
       },
     ];
   };
