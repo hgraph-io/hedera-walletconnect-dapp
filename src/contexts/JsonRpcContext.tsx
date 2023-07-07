@@ -17,9 +17,11 @@ import {
   DEFAULT_EIP155_METHODS,
   DEFAULT_NEAR_METHODS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
+  DEFAULT_HEDERA_METHODS,
 } from "../constants";
 import { useChainData } from "./ChainDataContext";
 import { rpcProvidersByChainId } from "../../src/helpers/api";
+import { EngineTypes } from "@walletconnect/types";
 
 /**
  * Types
@@ -46,6 +48,9 @@ interface IContext {
   nearRpc: {
     testSignAndSendTransaction: TRpcRequestCallback;
     testSignAndSendTransactions: TRpcRequestCallback;
+  };
+  hederaRpc: {
+    testSignAndSendTransaction: TRpcRequestCallback;
   };
   rpcResult?: IFormattedRpcResponse | null;
   isRpcRequestPending: boolean;
@@ -406,6 +411,38 @@ export function JsonRpcContextProvider({
     ),
   };
 
+  // -------- HEDERA RPC METHODS --------
+
+  const hederaRpc = {
+    testSignAndSendTransaction: _createJsonRpcRequestHandler(
+      async (
+        chainId: string,
+        address: string
+      ): Promise<IFormattedRpcResponse> => {
+        const method = DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION;
+        const topic = session!.topic;
+
+        const payload: EngineTypes.RequestParams = {
+          topic,
+          chainId,
+          request: {
+            method,
+            params: [{ greeting: "Hello from Hedera" }],
+          },
+        };
+
+        const result = await client!.request(payload);
+
+        return {
+          method,
+          address,
+          valid: true,
+          result: JSON.stringify(result),
+        };
+      }
+    ),
+  };
+
   // -------- NEAR RPC METHODS --------
 
   const nearRpc = {
@@ -514,6 +551,7 @@ export function JsonRpcContextProvider({
         ping,
         ethereumRpc,
         nearRpc,
+        hederaRpc,
         rpcResult: result,
         isRpcRequestPending: pending,
         isTestnet,
