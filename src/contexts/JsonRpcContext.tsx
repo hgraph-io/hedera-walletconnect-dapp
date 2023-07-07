@@ -2,7 +2,12 @@ import { BigNumber, utils } from "ethers";
 import { createContext, ReactNode, useContext, useState } from "react";
 import * as encoding from "@walletconnect/encoding";
 import { Transaction as EthTransaction } from "@ethereumjs/tx";
-import bs58 from "bs58";
+import {
+  Hbar,
+  TransferTransaction,
+  AccountId,
+  TransactionId,
+} from "@hashgraph/sdk";
 import {
   eip712,
   formatTestTransaction,
@@ -422,12 +427,26 @@ export function JsonRpcContextProvider({
         const method = DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION;
         const topic = session!.topic;
 
+        const payerAccountId = new AccountId(Number(address.split(".").pop()));
+        const nodeIds = [new AccountId(3)]; // 3 is the account id of the primary testnet node
+        const transactionId = TransactionId.generate(payerAccountId);
+
+        const transaction = new TransferTransaction()
+          .addHbarTransfer(address, Hbar.fromTinybars(-1000))
+          .addHbarTransfer("0.0.14838598", Hbar.fromTinybars(1000)) // hard-coded to my 2nd test account for now
+          .setNodeAccountIds(nodeIds)
+          .setTransactionId(transactionId)
+          .freeze()
+          .toBytes();
+
         const payload: EngineTypes.RequestParams = {
           topic,
           chainId,
           request: {
             method,
-            params: [{ greeting: "Hello from Hedera" }],
+            params: {
+              transaction,
+            },
           },
         };
 
