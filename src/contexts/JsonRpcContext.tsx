@@ -430,10 +430,16 @@ export function JsonRpcContextProvider({
         const payerAccountId = new AccountId(Number(address.split(".").pop()));
         const nodeIds = [new AccountId(3)]; // 3 is the account id of the primary testnet node
         const transactionId = TransactionId.generate(payerAccountId);
+        const transactionAmt = 1000;
+        const receiverAddress = "0.0.14838598"; // hard-coded to my 2nd test account for now
+        const memo = `Transfer ${Hbar.fromTinybars(
+          transactionAmt
+        ).toString()} from ${address} to ${receiverAddress}`;
 
         const transaction = new TransferTransaction()
-          .addHbarTransfer(address, Hbar.fromTinybars(-1000))
-          .addHbarTransfer("0.0.14838598", Hbar.fromTinybars(1000)) // hard-coded to my 2nd test account for now
+          .addHbarTransfer(address, Hbar.fromTinybars(-transactionAmt))
+          .addHbarTransfer("0.0.14838598", Hbar.fromTinybars(transactionAmt)) // hard-coded to my 2nd test account for now
+          .setTransactionMemo(memo)
           .setNodeAccountIds(nodeIds)
           .setTransactionId(transactionId)
           .freeze()
