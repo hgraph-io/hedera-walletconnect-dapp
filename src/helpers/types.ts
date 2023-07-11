@@ -1,3 +1,5 @@
+import { EngineTypes } from "@walletconnect/types";
+
 export interface AssetData {
   symbol: string;
   name: string;
@@ -154,3 +156,12 @@ export interface AccountAction {
 export interface AccountBalances {
   [account: string]: AssetData[];
 }
+
+export type TypedRequestParams<T> = Omit<
+  EngineTypes.RequestParams,
+  "request"
+> & {
+  request: Omit<EngineTypes.RequestParams["request"], "params"> & {
+    params: T;
+  };
+};
