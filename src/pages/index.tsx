@@ -33,6 +33,7 @@ import {
 import { useWalletConnectClient } from "../contexts/ClientContext";
 import { useJsonRpc } from "../contexts/JsonRpcContext";
 import { useChainData } from "../contexts/ChainDataContext";
+import { RequestType } from "@hashgraph/sdk";
 
 // Normal import does not work here
 const { version } = require("@walletconnect/sign-client/package.json");
@@ -200,19 +201,28 @@ const Home: NextPage = () => {
   };
 
   const getHederaActions = (): AccountAction[] => {
-    const onSignAndSendTransaction = async (
-      chainId: string,
-      address: string
-    ) => {
-      openRequestModal();
-      await hederaRpc.testSignAndSendTransaction(chainId, address);
+    const requestTypeHandlerMap = {
+      [RequestType.CryptoTransfer.toString()]:
+        hederaRpc.testSignAndSendCryptoTransfer,
+      [RequestType.ConsensusSubmitMessage.toString()]:
+        hederaRpc.testSignAndSendTopicSubmitMessage,
     };
-    return [
-      {
-        method: DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION,
-        callback: onSignAndSendTransaction,
-      },
-    ];
+    const onSignAndSendTransaction =
+      (requestType: string) => async (chainId: string, address: string) => {
+        openRequestModal();
+        const transactionToExecute = requestTypeHandlerMap[requestType];
+        await transactionToExecute(chainId, address);
+      };
+
+    const actions: AccountAction[] = Object.keys(requestTypeHandlerMap).map(
+      (type) => ({
+        method:
+          DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION +
+          `: ${type.toString()}`,
+        callback: onSignAndSendTransaction(type.toString()),
+      })
+    );
+    return actions;
   };
 
   const getBlockchainActions = (chainId: string) => {

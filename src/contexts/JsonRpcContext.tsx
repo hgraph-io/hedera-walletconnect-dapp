@@ -8,6 +8,7 @@ import {
   AccountId,
   TransactionId,
   RequestType,
+  TopicMessageSubmitTransaction,
 } from "@hashgraph/sdk";
 import {
   eip712,
@@ -57,7 +58,8 @@ interface IContext {
     testSignAndSendTransactions: TRpcRequestCallback;
   };
   hederaRpc: {
-    testSignAndSendTransaction: TRpcRequestCallback;
+    testSignAndSendCryptoTransfer: TRpcRequestCallback;
+    testSignAndSendTopicSubmitMessage: TRpcRequestCallback;
   };
   rpcResult?: IFormattedRpcResponse | null;
   isRpcRequestPending: boolean;
@@ -410,7 +412,7 @@ export function JsonRpcContextProvider({
   // -------- HEDERA RPC METHODS --------
 
   const hederaRpc = {
-    testSignAndSendTransaction: _createJsonRpcRequestHandler(
+    testSignAndSendCryptoTransfer: _createJsonRpcRequestHandler(
       async (
         chainId: string,
         address: string
@@ -434,6 +436,48 @@ export function JsonRpcContextProvider({
 
         const params = HederaParamsFactory.buildSignAndSendTransactionPayload(
           RequestType.CryptoTransfer,
+          transaction
+        );
+
+        const payload: HederaSessionRequestParams = {
+          topic,
+          chainId,
+          request: {
+            method,
+            params,
+          },
+        };
+
+        const result = await client!.request(payload);
+
+        return {
+          method,
+          address,
+          valid: true,
+          result: JSON.stringify(result),
+        };
+      }
+    ),
+    testSignAndSendTopicSubmitMessage: _createJsonRpcRequestHandler(
+      async (
+        chainId: string,
+        address: string
+      ): Promise<IFormattedRpcResponse> => {
+        const method = DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION;
+        const topic = session!.topic;
+
+        const payerAccountId = new AccountId(Number(address.split(".").pop()));
+        const transactionId = TransactionId.generate(payerAccountId);
+
+        const transaction = new TopicMessageSubmitTransaction()
+          .setTopicId("0.0.15378604") // Topic created for testing this app
+          .setMessage(
+            `Hello from hedera-walletconnect-dapp at ${new Date().toISOString()}`
+          )
+          .setTransactionId(transactionId);
+
+        const params = HederaParamsFactory.buildSignAndSendTransactionPayload(
+          RequestType.ConsensusSubmitMessage,
           transaction
         );
 
