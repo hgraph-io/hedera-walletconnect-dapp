@@ -10,14 +10,18 @@ import {
   RequestType,
 } from "@hashgraph/sdk";
 import {
-  HederaParamsFactory,
   eip712,
   formatTestTransaction,
   getLocalStorageTestnetFlag,
   hashPersonalMessage,
   hashTypedDataMessage,
   verifySignature,
+  rpcProvidersByChainId,
 } from "../helpers";
+import {
+  HederaParamsFactory,
+  HederaSessionRequestParams,
+} from "../helpers/HederaParamsFactory";
 import { useWalletConnectClient } from "./ClientContext";
 import {
   DEFAULT_EIP155_METHODS,
@@ -26,9 +30,6 @@ import {
   DEFAULT_HEDERA_METHODS,
 } from "../constants";
 import { useChainData } from "./ChainDataContext";
-import { rpcProvidersByChainId } from "../../src/helpers/api";
-import { EngineTypes } from "@walletconnect/types";
-import { HederaSessionRequestParams } from "../helpers/hedera/types";
 
 /**
  * Types
