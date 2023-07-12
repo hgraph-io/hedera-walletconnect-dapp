@@ -201,19 +201,27 @@ const Home: NextPage = () => {
   };
 
   const getHederaActions = (): AccountAction[] => {
+    const requestTypeHandlerMap = {
+      [RequestType.CryptoTransfer.toString()]:
+        hederaRpc.testSignAndSendCryptoTransfer,
+      [RequestType.ConsensusSubmitMessage.toString()]:
+        hederaRpc.testSignAndSendTopicSubmitMessage,
+    };
     const onSignAndSendTransaction =
       (requestType: string) => async (chainId: string, address: string) => {
         openRequestModal();
-        console.log("***", { requestType });
-        await hederaRpc.testSignAndSendTransaction(chainId, address);
+        const transactionToExecute = requestTypeHandlerMap[requestType];
+        await transactionToExecute(chainId, address);
       };
-    const requestTypes = [RequestType.CryptoTransfer, RequestType.TokenCreate];
-    const actions: AccountAction[] = requestTypes.map((type) => ({
-      method:
-        DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION +
-        `: ${type.toString()}`,
-      callback: onSignAndSendTransaction(type.toString()),
-    }));
+
+    const actions: AccountAction[] = Object.keys(requestTypeHandlerMap).map(
+      (type) => ({
+        method:
+          DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION +
+          `: ${type.toString()}`,
+        callback: onSignAndSendTransaction(type.toString()),
+      })
+    );
     return actions;
   };
 
