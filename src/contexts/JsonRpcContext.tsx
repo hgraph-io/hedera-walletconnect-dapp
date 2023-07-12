@@ -7,16 +7,21 @@ import {
   TransferTransaction,
   AccountId,
   TransactionId,
+  RequestType,
 } from "@hashgraph/sdk";
 import {
   eip712,
   formatTestTransaction,
   getLocalStorageTestnetFlag,
-  getProviderUrl,
   hashPersonalMessage,
   hashTypedDataMessage,
   verifySignature,
+  rpcProvidersByChainId,
 } from "../helpers";
+import {
+  HederaParamsFactory,
+  HederaSessionRequestParams,
+} from "../helpers/HederaParamsFactory";
 import { useWalletConnectClient } from "./ClientContext";
 import {
   DEFAULT_EIP155_METHODS,
@@ -25,8 +30,6 @@ import {
   DEFAULT_HEDERA_METHODS,
 } from "../constants";
 import { useChainData } from "./ChainDataContext";
-import { rpcProvidersByChainId } from "../../src/helpers/api";
-import { EngineTypes } from "@walletconnect/types";
 
 /**
  * Types
@@ -428,25 +431,30 @@ export function JsonRpcContextProvider({
         const topic = session!.topic;
 
         const payerAccountId = new AccountId(Number(address.split(".").pop()));
-        const nodeIds = [new AccountId(3)]; // 3 is the account id of the primary testnet node
         const transactionId = TransactionId.generate(payerAccountId);
+        const transactionAmt = 1000;
+        const receiverAddress = "0.0.14838598"; // hard-coded to my 2nd test account for now
+        const memo = `Transfer amount: ${Hbar.fromTinybars(
+          transactionAmt
+        ).toString()}, from: ${address}, to: ${receiverAddress}`;
 
         const transaction = new TransferTransaction()
-          .addHbarTransfer(address, Hbar.fromTinybars(-1000))
-          .addHbarTransfer("0.0.14838598", Hbar.fromTinybars(1000)) // hard-coded to my 2nd test account for now
-          .setNodeAccountIds(nodeIds)
-          .setTransactionId(transactionId)
-          .freeze()
-          .toBytes();
+          .addHbarTransfer(address, Hbar.fromTinybars(-transactionAmt))
+          .addHbarTransfer(receiverAddress, Hbar.fromTinybars(transactionAmt))
+          .setTransactionMemo(memo)
+          .setTransactionId(transactionId);
 
-        const payload: EngineTypes.RequestParams = {
+        const params = HederaParamsFactory.buildSignAndSendTransactionPayload(
+          RequestType.CryptoTransfer,
+          transaction
+        );
+
+        const payload: HederaSessionRequestParams = {
           topic,
           chainId,
           request: {
             method,
-            params: {
-              transaction,
-            },
+            params,
           },
         };
 
