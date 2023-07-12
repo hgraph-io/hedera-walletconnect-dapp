@@ -1,5 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { AssetData } from "./types";
+import { Hbar, HbarUnit } from "@hashgraph/sdk";
 
 export const rpcProvidersByChainId: Record<number, any> = {
   1: {
@@ -45,10 +46,9 @@ export async function apiGetAccountBalance(
   const namespace = chainId.split(":")[0];
   if (namespace === "hedera") {
     const response = await hederaApi.get(`/accounts/${address}`);
-    const { data } = response;
-    const balance = data.balance.balance;
+    const { balance } = response.data.balance;
     return {
-      balance,
+      balance: Hbar.fromTinybars(balance).to(HbarUnit.Hbar).toFormat(),
       name: "HBAR",
       symbol: "ℏ",
     };
