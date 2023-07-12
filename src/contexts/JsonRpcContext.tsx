@@ -29,7 +29,6 @@ import {
   DEFAULT_EIP155_OPTIONAL_METHODS,
   DEFAULT_HEDERA_METHODS,
 } from "../constants";
-import { useChainData } from "./ChainDataContext";
 
 /**
  * Types
@@ -85,8 +84,6 @@ export function JsonRpcContextProvider({
 
   const { client, session, accounts, balances } = useWalletConnectClient();
 
-  const { chainData } = useChainData();
-
   const _createJsonRpcRequestHandler =
     (
       rpcRequest: (
@@ -117,14 +114,6 @@ export function JsonRpcContextProvider({
         setPending(false);
       }
     };
-
-  const _verifyEip155MessageSignature = (
-    message: string,
-    signature: string,
-    address: string
-  ) =>
-    utils.verifyMessage(message, signature).toLowerCase() ===
-    address.toLowerCase();
 
   const ping = async () => {
     if (typeof client === "undefined") {
@@ -223,7 +212,6 @@ export function JsonRpcContextProvider({
         });
 
         let valid = false;
-        const [, reference] = chainId.split(":");
 
         valid = EthTransaction.fromSerializedTx(
           signedTx as any
