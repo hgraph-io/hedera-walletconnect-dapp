@@ -51,3 +51,9 @@ yarn test
 ```bash
 yarn build
 ```
+
+## Demo
+
+https://github.com/hgraph-io/hedera-walletconnect-dapp/assets/136644362/a4440481-f51d-4faf-ae3d-8afeeef33779
+
+
