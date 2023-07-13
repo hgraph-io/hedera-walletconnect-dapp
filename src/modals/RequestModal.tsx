@@ -2,6 +2,7 @@ import * as React from "react";
 
 import Loader from "../components/Loader";
 import { SContainer, STable, SRow, SKey, SValue } from "../components/shared";
+import ScrollableData from "../components/ScrollableData";
 
 import { SModalContainer, SModalTitle, SModalParagraph } from "./shared";
 
@@ -33,7 +34,13 @@ const RequestModal = (props: RequestModalProps) => {
             {Object.keys(result).map((key) => (
               <SRow key={key}>
                 <SKey>{key}</SKey>
-                <SValue>{result[key].toString()}</SValue>
+                <SValue>
+                  {key === "result" ? (
+                    <ScrollableData data={result[key]} />
+                  ) : (
+                    result[key].toString()
+                  )}
+                </SValue>
               </SRow>
             ))}
           </STable>
