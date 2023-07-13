@@ -16,7 +16,7 @@ const RequestModal = (props: RequestModalProps) => {
     <>
       {pending ? (
         <SModalContainer>
-          <SModalTitle>{"Pending JSON-RPC Request"}</SModalTitle>
+          <SModalTitle>{"Pending Request"}</SModalTitle>
           <SContainer>
             <Loader />
             <SModalParagraph>
@@ -27,9 +27,7 @@ const RequestModal = (props: RequestModalProps) => {
       ) : result ? (
         <SModalContainer>
           <SModalTitle>
-            {result.valid
-              ? "JSON-RPC Request Approved"
-              : "JSON-RPC Request Failed"}
+            {result.valid ? "Request Approved" : "Request Failed"}
           </SModalTitle>
           <STable>
             {Object.keys(result).map((key) => (
@@ -42,7 +40,7 @@ const RequestModal = (props: RequestModalProps) => {
         </SModalContainer>
       ) : (
         <SModalContainer>
-          <SModalTitle>{"JSON-RPC Request Rejected"}</SModalTitle>
+          <SModalTitle>{"Request Rejected"}</SModalTitle>
         </SModalContainer>
       )}
     </>
