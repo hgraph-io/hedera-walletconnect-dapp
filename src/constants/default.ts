@@ -11,7 +11,6 @@ export const DEFAULT_MAIN_CHAINS = [
 export const DEFAULT_TEST_CHAINS = [
   // testnets
   "eip155:5",
-  "near:testnet",
   "hedera:testnet",
 ];
 
@@ -47,17 +46,6 @@ export enum DEFAULT_EIP155_OPTIONAL_METHODS {
 export enum DEFAULT_EIP_155_EVENTS {
   ETH_CHAIN_CHANGED = "chainChanged",
   ETH_ACCOUNTS_CHANGED = "accountsChanged",
-}
-
-/**
- * NEAR
- */
-export enum DEFAULT_NEAR_METHODS {
-  NEAR_SIGN_IN = "near_signIn",
-  NEAR_SIGN_OUT = "near_signOut",
-  NEAR_GET_ACCOUNTS = "near_getAccounts",
-  NEAR_SIGN_AND_SEND_TRANSACTION = "near_signAndSendTransaction",
-  NEAR_SIGN_AND_SEND_TRANSACTIONS = "near_signAndSendTransactions",
 }
 
 export enum DEFAULT_NEAR_EVENTS {}

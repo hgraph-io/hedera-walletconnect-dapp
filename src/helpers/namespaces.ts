@@ -2,7 +2,6 @@ import { ProposalTypes } from "@walletconnect/types";
 import {
   DEFAULT_EIP155_METHODS,
   DEFAULT_EIP_155_EVENTS,
-  DEFAULT_NEAR_METHODS,
   DEFAULT_NEAR_EVENTS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
   DEFAULT_HEDERA_METHODS,
@@ -25,8 +24,6 @@ export const getSupportedRequiredMethodsByNamespace = (namespace: string) => {
   switch (namespace) {
     case "eip155":
       return Object.values(DEFAULT_EIP155_METHODS);
-    case "near":
-      return Object.values(DEFAULT_NEAR_METHODS);
     case "hedera":
       return Object.values(DEFAULT_HEDERA_METHODS);
     default:
@@ -40,7 +37,6 @@ export const getSupportedOptionalMethodsByNamespace = (namespace: string) => {
   switch (namespace) {
     case "eip155":
       return Object.values(DEFAULT_EIP155_OPTIONAL_METHODS);
-    case "near":
     case "hedera":
       return [];
     default:
@@ -54,8 +50,6 @@ export const getSupportedEventsByNamespace = (namespace: string) => {
   switch (namespace) {
     case "eip155":
       return Object.values(DEFAULT_EIP_155_EVENTS);
-    case "near":
-      return Object.values(DEFAULT_NEAR_EVENTS);
     case "hedera":
       return Object.values(DEFAULT_HEDERA_EVENTS);
     default:
