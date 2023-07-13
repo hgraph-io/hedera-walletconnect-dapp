@@ -1,8 +1,8 @@
 # React dApp (with standalone v2 client)
 
-🔗 Live dapp demo - https://react-app.walletconnect.com/ <br />
-🔗 Live wallet demo - https://react-wallet.walletconnect.com/ <br />
-📚 WalletConnect v2 Docs - https://docs.walletconnect.com/2.0
+This demo dApp is a pared down version of WalletConnect's [react-dapp-v2 demo](https://github.com/WalletConnect/web-examples/tree/main/dapps/react-dapp-v2). This version of the app only showcases connecting a dApp and a wallet for Ethereum (EVM) chains via JSON-RPC and Hedera via the official `@hashgraph/sdk` [library](https://github.com/hashgraph/hedera-sdk-js).
+
+This dApp is meant to be used in conjuction with the corresponding [hedera-walletconnect-wallet](https://github.com/hgraph-io/hedera-walletconnect-wallet). Please also set up that project.
 
 ## Overview
 
@@ -15,13 +15,13 @@ client for WalletConnect v2 to:
 
 ## Running locally
 
-Install the app's dependencies:
+1. Install the app's dependencies:
 
 ```bash
 yarn
 ```
 
-Set up your local environment variables by copying the example into your own `.env.local` file:
+2. Set up your local environment variables by copying the example into your own `.env.local` file:
 
 ```bash
 cp .env.local.example .env.local
@@ -37,6 +37,8 @@ Your `.env.local` now contains the following environment variables:
 ```bash
 yarn dev
 ```
+
+Then go to http://localhost:3000 (Note that you may have a better experience running in an incognito browser window)
 
 ## Test
 
