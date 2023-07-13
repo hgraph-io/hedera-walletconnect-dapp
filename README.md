@@ -4,6 +4,8 @@ This demo dApp is a pared down version of WalletConnect's [react-dapp-v2 demo](h
 
 This dApp is meant to be used in conjuction with the corresponding [hedera-walletconnect-wallet](https://github.com/hgraph-io/hedera-walletconnect-wallet). Please also set up that project.
 
+For integrating Hedera, The dApp's responsibility is to build the transaction with the Hedera SDK, freeze the transaction, convert the transaction to bytes, and then pass the payload to the wallet via WalletConnect to the wallet. The wallet's responsibility is to use the Hedera SDK to reconstruct the transaction object from bytes, extract and format information about the transaction to present to the user, sign and submit the transaction to the Hedera network if approved, and report approval/rejection results back to the dApp.
+
 ## Overview
 
 This is an example implementation of a React dApp (generated via `create-react-app`) using the standalone
