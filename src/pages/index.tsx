@@ -11,7 +11,6 @@ import {
   DEFAULT_EIP155_METHODS,
   DEFAULT_MAIN_CHAINS,
   DEFAULT_TEST_CHAINS,
-  DEFAULT_NEAR_METHODS,
   DEFAULT_HEDERA_METHODS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
 } from "../constants";
@@ -67,7 +66,6 @@ const Home: NextPage = () => {
   const {
     ping,
     ethereumRpc,
-    nearRpc,
     hederaRpc,
     isRpcRequestPending,
     rpcResult,
@@ -173,33 +171,6 @@ const Home: NextPage = () => {
     return availableActions;
   };
 
-  const getNearActions = (): AccountAction[] => {
-    const onSignAndSendTransaction = async (
-      chainId: string,
-      address: string
-    ) => {
-      openRequestModal();
-      await nearRpc.testSignAndSendTransaction(chainId, address);
-    };
-    const onSignAndSendTransactions = async (
-      chainId: string,
-      address: string
-    ) => {
-      openRequestModal();
-      await nearRpc.testSignAndSendTransactions(chainId, address);
-    };
-    return [
-      {
-        method: DEFAULT_NEAR_METHODS.NEAR_SIGN_AND_SEND_TRANSACTION,
-        callback: onSignAndSendTransaction,
-      },
-      {
-        method: DEFAULT_NEAR_METHODS.NEAR_SIGN_AND_SEND_TRANSACTIONS,
-        callback: onSignAndSendTransactions,
-      },
-    ];
-  };
-
   const getHederaActions = (): AccountAction[] => {
     const requestTypeHandlerMap = {
       [RequestType.CryptoTransfer.toString()]:
@@ -230,8 +201,6 @@ const Home: NextPage = () => {
     switch (namespace) {
       case "eip155":
         return getEthereumActions();
-      case "near":
-        return getNearActions();
       case "hedera":
         return getHederaActions();
       default:

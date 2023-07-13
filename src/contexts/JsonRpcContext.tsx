@@ -26,7 +26,6 @@ import {
 import { useWalletConnectClient } from "./ClientContext";
 import {
   DEFAULT_EIP155_METHODS,
-  DEFAULT_NEAR_METHODS,
   DEFAULT_EIP155_OPTIONAL_METHODS,
   DEFAULT_HEDERA_METHODS,
 } from "../constants";
@@ -52,10 +51,6 @@ interface IContext {
     testSignPersonalMessage: TRpcRequestCallback;
     testSignTypedData: TRpcRequestCallback;
     testSignTypedDatav4: TRpcRequestCallback;
-  };
-  nearRpc: {
-    testSignAndSendTransaction: TRpcRequestCallback;
-    testSignAndSendTransactions: TRpcRequestCallback;
   };
   hederaRpc: {
     testSignAndSendCryptoTransfer: TRpcRequestCallback;
@@ -502,114 +497,11 @@ export function JsonRpcContextProvider({
     ),
   };
 
-  // -------- NEAR RPC METHODS --------
-
-  const nearRpc = {
-    testSignAndSendTransaction: _createJsonRpcRequestHandler(
-      async (
-        chainId: string,
-        address: string
-      ): Promise<IFormattedRpcResponse> => {
-        const method = DEFAULT_NEAR_METHODS.NEAR_SIGN_AND_SEND_TRANSACTION;
-        const result = await client!.request({
-          topic: session!.topic,
-          chainId,
-          request: {
-            method,
-            params: {
-              transaction: {
-                signerId: address,
-                receiverId: "guest-book.testnet",
-                actions: [
-                  {
-                    type: "FunctionCall",
-                    params: {
-                      methodName: "addMessage",
-                      args: { text: "Hello from Wallet Connect!" },
-                      gas: "30000000000000",
-                      deposit: "0",
-                    },
-                  },
-                ],
-              },
-            },
-          },
-        });
-
-        return {
-          method,
-          address,
-          valid: true,
-          result: JSON.stringify((result as any).transaction),
-        };
-      }
-    ),
-    testSignAndSendTransactions: _createJsonRpcRequestHandler(
-      async (
-        chainId: string,
-        address: string
-      ): Promise<IFormattedRpcResponse> => {
-        const method = DEFAULT_NEAR_METHODS.NEAR_SIGN_AND_SEND_TRANSACTIONS;
-        const result = await client!.request({
-          topic: session!.topic,
-          chainId,
-          request: {
-            method,
-            params: {
-              transactions: [
-                {
-                  signerId: address,
-                  receiverId: "guest-book.testnet",
-                  actions: [
-                    {
-                      type: "FunctionCall",
-                      params: {
-                        methodName: "addMessage",
-                        args: { text: "Hello from Wallet Connect! (1/2)" },
-                        gas: "30000000000000",
-                        deposit: "0",
-                      },
-                    },
-                  ],
-                },
-                {
-                  signerId: address,
-                  receiverId: "guest-book.testnet",
-                  actions: [
-                    {
-                      type: "FunctionCall",
-                      params: {
-                        methodName: "addMessage",
-                        args: { text: "Hello from Wallet Connect! (2/2)" },
-                        gas: "30000000000000",
-                        deposit: "0",
-                      },
-                    },
-                  ],
-                },
-              ],
-            },
-          },
-        });
-
-        return {
-          method,
-          address,
-          valid: true,
-          result: JSON.stringify(
-            (result as any).map((r: any) => r.transaction)
-          ),
-        };
-      }
-    ),
-  };
-
   return (
     <JsonRpcContext.Provider
       value={{
         ping,
         ethereumRpc,
-        nearRpc,
         hederaRpc,
         rpcResult: result,
         isRpcRequestPending: pending,
