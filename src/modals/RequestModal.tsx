@@ -2,6 +2,7 @@ import * as React from "react";
 
 import Loader from "../components/Loader";
 import { SContainer, STable, SRow, SKey, SValue } from "../components/shared";
+import ScrollableData from "../components/ScrollableData";
 
 import { SModalContainer, SModalTitle, SModalParagraph } from "./shared";
 
@@ -16,7 +17,7 @@ const RequestModal = (props: RequestModalProps) => {
     <>
       {pending ? (
         <SModalContainer>
-          <SModalTitle>{"Pending JSON-RPC Request"}</SModalTitle>
+          <SModalTitle>{"Pending Request"}</SModalTitle>
           <SContainer>
             <Loader />
             <SModalParagraph>
@@ -27,22 +28,26 @@ const RequestModal = (props: RequestModalProps) => {
       ) : result ? (
         <SModalContainer>
           <SModalTitle>
-            {result.valid
-              ? "JSON-RPC Request Approved"
-              : "JSON-RPC Request Failed"}
+            {result.valid ? "Request Approved" : "Request Failed"}
           </SModalTitle>
           <STable>
             {Object.keys(result).map((key) => (
               <SRow key={key}>
                 <SKey>{key}</SKey>
-                <SValue>{result[key].toString()}</SValue>
+                <SValue>
+                  {key === "result" ? (
+                    <ScrollableData data={result[key]} />
+                  ) : (
+                    result[key].toString()
+                  )}
+                </SValue>
               </SRow>
             ))}
           </STable>
         </SModalContainer>
       ) : (
         <SModalContainer>
-          <SModalTitle>{"JSON-RPC Request Rejected"}</SModalTitle>
+          <SModalTitle>{"Request Rejected"}</SModalTitle>
         </SModalContainer>
       )}
     </>
