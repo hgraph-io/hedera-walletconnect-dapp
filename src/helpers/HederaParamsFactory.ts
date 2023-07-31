@@ -9,7 +9,7 @@ import { TypedRequestParams } from "./types";
 export type HederaSignAndSendTransactionParams = {
   transaction: {
     type: string;
-    bytes: Uint8Array;
+    bytes: string;
   };
 };
 
@@ -26,7 +26,7 @@ export class HederaParamsFactory {
     return {
       transaction: {
         type: type.toString(),
-        bytes: transaction.toBytes(),
+        bytes: this._encodeTransactionBytes(transaction),
       },
     };
   }
@@ -42,5 +42,10 @@ export class HederaParamsFactory {
     if (!nodeIds || nodeIds.length === 0) {
       transaction.setNodeAccountIds([new AccountId(3)]);
     }
+  }
+
+  private static _encodeTransactionBytes(transaction: Transaction): string {
+    const transactionBytes = transaction.toBytes();
+    return Buffer.from(transactionBytes).toString("base64");
   }
 }
