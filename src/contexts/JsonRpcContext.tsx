@@ -418,7 +418,7 @@ export function JsonRpcContextProvider({
         const payerAccountId = new AccountId(Number(address.split(".").pop()));
         const transactionId = TransactionId.generate(payerAccountId);
         const transactionAmt = 1000;
-        const receiverAddress = "0.0.14838598"; // hard-coded to my 2nd test account for now
+        const receiverAddress = "0.0.432284"; // hard-coded to my 2nd test account for now
         const memo = `Transfer amount: ${Hbar.fromTinybars(
           transactionAmt
         ).toString()}, from: ${address}, to: ${receiverAddress}`;
@@ -465,7 +465,7 @@ export function JsonRpcContextProvider({
         const transactionId = TransactionId.generate(payerAccountId);
 
         const transaction = new TopicMessageSubmitTransaction()
-          .setTopicId("0.0.15378604") // Topic created for testing this app
+          .setTopicId("0.0.432078") // Topic created for testing this app
           .setMessage(
             `Hello from hedera-walletconnect-dapp at ${new Date().toISOString()}`
           )
