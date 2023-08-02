@@ -171,28 +171,43 @@ const Home: NextPage = () => {
     return availableActions;
   };
 
-  const getHederaActions = (): AccountAction[] => {
-    const requestTypeHandlerMap = {
-      [RequestType.CryptoTransfer.toString()]:
-        hederaRpc.testSignAndSendCryptoTransfer,
-      [RequestType.ConsensusSubmitMessage.toString()]:
-        hederaRpc.testSignAndSendTopicSubmitMessage,
+  const openModalWithCallback =
+    (callback: keyof typeof hederaRpc) =>
+    async (chainId: string, address: string) => {
+      openRequestModal();
+      await hederaRpc[callback](chainId, address);
     };
-    const onSignAndSendTransaction =
-      (requestType: string) => async (chainId: string, address: string) => {
-        openRequestModal();
-        const transactionToExecute = requestTypeHandlerMap[requestType];
-        await transactionToExecute(chainId, address);
-      };
 
-    const actions: AccountAction[] = Object.keys(requestTypeHandlerMap).map(
-      (type) => ({
-        method:
-          DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_EXECUTE_TRANSACTION +
-          `: ${type.toString()}`,
-        callback: onSignAndSendTransaction(type.toString()),
-      })
-    );
+  const getHederaActions = (): AccountAction[] => {
+    const actions: AccountAction[] = [];
+
+    /** Sign and execute CryptoTransfer */
+    actions.push({
+      method:
+        DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_EXECUTE_TRANSACTION +
+        ": " +
+        RequestType.CryptoTransfer.toString(),
+      callback: openModalWithCallback("testSignAndExecuteCryptoTransfer"),
+    });
+
+    /** Sign and execute ConsensusSubmitMessage */
+    actions.push({
+      method:
+        DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_EXECUTE_TRANSACTION +
+        ": " +
+        RequestType.ConsensusSubmitMessage.toString(),
+      callback: openModalWithCallback("testSignAndExecuteTopicSubmitMessage"),
+    });
+
+    /** Sign and return CryptoTransfer */
+    actions.push({
+      method:
+        DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_RETURN_TRANSACTION +
+        ": " +
+        RequestType.CryptoTransfer.toString(),
+      callback: openModalWithCallback("testSignAndReturnCryptoTransfer"),
+    });
+
     return actions;
   };
 
