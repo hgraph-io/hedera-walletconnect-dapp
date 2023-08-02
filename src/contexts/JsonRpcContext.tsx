@@ -9,6 +9,7 @@ import {
   TransactionId,
   RequestType,
   TopicMessageSubmitTransaction,
+  Transaction,
 } from "@hashgraph/sdk";
 import {
   eip712,
@@ -529,7 +530,12 @@ export function JsonRpcContextProvider({
           method,
           address,
           valid: true,
-          result: JSON.stringify(result),
+          result: JSON.stringify({
+            raw: result,
+            decoded: Transaction.fromBytes(
+              Buffer.from((result as any).transaction.bytes, "base64")
+            ),
+          }),
         };
       }
     ),
