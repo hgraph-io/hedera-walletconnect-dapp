@@ -188,7 +188,7 @@ const Home: NextPage = () => {
     const actions: AccountAction[] = Object.keys(requestTypeHandlerMap).map(
       (type) => ({
         method:
-          DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION +
+          DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_EXECUTE_TRANSACTION +
           `: ${type.toString()}`,
         callback: onSignAndSendTransaction(type.toString()),
       })
