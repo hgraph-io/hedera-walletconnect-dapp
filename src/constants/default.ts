@@ -54,7 +54,7 @@ export enum DEFAULT_NEAR_EVENTS {}
  * Hedera
  */
 export enum DEFAULT_HEDERA_METHODS {
-  HEDERA_SIGN_AND_SEND_TRANSACTION = "hedera_signAndSendTransaction",
+  HEDERA_SIGN_AND_EXECUTE_TRANSACTION = "hedera_signAndExecuteTransaction",
 }
 
 export enum DEFAULT_HEDERA_EVENTS {}

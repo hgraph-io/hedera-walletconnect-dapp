@@ -412,7 +412,8 @@ export function JsonRpcContextProvider({
         chainId: string,
         address: string
       ): Promise<IFormattedRpcResponse> => {
-        const method = DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION;
+        const method =
+          DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_EXECUTE_TRANSACTION;
         const topic = session!.topic;
 
         const payerAccountId = new AccountId(Number(address.split(".").pop()));
@@ -458,7 +459,8 @@ export function JsonRpcContextProvider({
         chainId: string,
         address: string
       ): Promise<IFormattedRpcResponse> => {
-        const method = DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_SEND_TRANSACTION;
+        const method =
+          DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_EXECUTE_TRANSACTION;
         const topic = session!.topic;
 
         const payerAccountId = new AccountId(Number(address.split(".").pop()));
