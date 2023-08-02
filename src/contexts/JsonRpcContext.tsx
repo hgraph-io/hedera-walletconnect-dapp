@@ -53,8 +53,9 @@ interface IContext {
     testSignTypedDatav4: TRpcRequestCallback;
   };
   hederaRpc: {
-    testSignAndSendCryptoTransfer: TRpcRequestCallback;
-    testSignAndSendTopicSubmitMessage: TRpcRequestCallback;
+    testSignAndExecuteCryptoTransfer: TRpcRequestCallback;
+    testSignAndExecuteTopicSubmitMessage: TRpcRequestCallback;
+    testSignAndReturnCryptoTransfer: TRpcRequestCallback;
   };
   rpcResult?: IFormattedRpcResponse | null;
   isRpcRequestPending: boolean;
@@ -98,10 +99,11 @@ export function JsonRpcContextProvider({
 
       try {
         setPending(true);
+        console.log("***Im getting here");
         const result = await rpcRequest(chainId, address);
         setResult(result);
       } catch (err: any) {
-        console.error("RPC request failed: ", err);
+        console.error("***RPC request failed: ", err);
         setResult({
           address,
           valid: false,
@@ -407,14 +409,13 @@ export function JsonRpcContextProvider({
   // -------- HEDERA RPC METHODS --------
 
   const hederaRpc = {
-    testSignAndSendCryptoTransfer: _createJsonRpcRequestHandler(
+    testSignAndExecuteCryptoTransfer: _createJsonRpcRequestHandler(
       async (
         chainId: string,
         address: string
       ): Promise<IFormattedRpcResponse> => {
         const method =
           DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_EXECUTE_TRANSACTION;
-        const topic = session!.topic;
 
         const payerAccountId = new AccountId(Number(address.split(".").pop()));
         const transactionId = TransactionId.generate(payerAccountId);
@@ -436,7 +437,7 @@ export function JsonRpcContextProvider({
         );
 
         const payload: HederaSessionRequestParams = {
-          topic,
+          topic: session!.topic,
           chainId,
           request: {
             method,
@@ -454,14 +455,13 @@ export function JsonRpcContextProvider({
         };
       }
     ),
-    testSignAndSendTopicSubmitMessage: _createJsonRpcRequestHandler(
+    testSignAndExecuteTopicSubmitMessage: _createJsonRpcRequestHandler(
       async (
         chainId: string,
         address: string
       ): Promise<IFormattedRpcResponse> => {
         const method =
           DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_EXECUTE_TRANSACTION;
-        const topic = session!.topic;
 
         const payerAccountId = new AccountId(Number(address.split(".").pop()));
         const transactionId = TransactionId.generate(payerAccountId);
@@ -479,11 +479,38 @@ export function JsonRpcContextProvider({
         );
 
         const payload: HederaSessionRequestParams = {
-          topic,
+          topic: session!.topic,
           chainId,
           request: {
             method,
             params,
+          },
+        };
+
+        const result = await client!.request(payload);
+
+        return {
+          method,
+          address,
+          valid: true,
+          result: JSON.stringify(result),
+        };
+      }
+    ),
+    testSignAndReturnCryptoTransfer: _createJsonRpcRequestHandler(
+      async (
+        chainId: string,
+        address: string
+      ): Promise<IFormattedRpcResponse> => {
+        const method =
+          DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_RETURN_TRANSACTION;
+
+        const payload = {
+          topic: session!.topic,
+          chainId,
+          request: {
+            method,
+            params: { hello: "world" },
           },
         };
 
