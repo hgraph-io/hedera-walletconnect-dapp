@@ -17,7 +17,7 @@ export type HederaSessionRequestParams =
   TypedRequestParams<HederaSignAndSendTransactionParams>;
 
 export class HederaParamsFactory {
-  public static buildSignAndSendTransactionPayload(
+  public static buildTransactionPayload(
     type: RequestType,
     transaction: Transaction
   ): HederaSignAndSendTransactionParams {

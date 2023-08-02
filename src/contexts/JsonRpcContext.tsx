@@ -99,11 +99,9 @@ export function JsonRpcContextProvider({
 
       try {
         setPending(true);
-        console.log("***Im getting here");
         const result = await rpcRequest(chainId, address);
         setResult(result);
       } catch (err: any) {
-        console.error("***RPC request failed: ", err);
         setResult({
           address,
           valid: false,
@@ -408,6 +406,22 @@ export function JsonRpcContextProvider({
 
   // -------- HEDERA RPC METHODS --------
 
+  const _buildTestTransferTransaction = (address: string) => {
+    const payerAccountId = new AccountId(Number(address.split(".").pop()));
+    const transactionId = TransactionId.generate(payerAccountId);
+    const transactionAmt = 1000;
+    const receiverAddress = "0.0.432284"; // hard-coded to my 2nd test account for now
+    const memo = `Transfer amount: ${Hbar.fromTinybars(
+      transactionAmt
+    ).toString()}, from: ${address}, to: ${receiverAddress}`;
+
+    return new TransferTransaction()
+      .addHbarTransfer(address, Hbar.fromTinybars(-transactionAmt))
+      .addHbarTransfer(receiverAddress, Hbar.fromTinybars(transactionAmt))
+      .setTransactionMemo(memo)
+      .setTransactionId(transactionId);
+  };
+
   const hederaRpc = {
     testSignAndExecuteCryptoTransfer: _createJsonRpcRequestHandler(
       async (
@@ -417,21 +431,9 @@ export function JsonRpcContextProvider({
         const method =
           DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_EXECUTE_TRANSACTION;
 
-        const payerAccountId = new AccountId(Number(address.split(".").pop()));
-        const transactionId = TransactionId.generate(payerAccountId);
-        const transactionAmt = 1000;
-        const receiverAddress = "0.0.432284"; // hard-coded to my 2nd test account for now
-        const memo = `Transfer amount: ${Hbar.fromTinybars(
-          transactionAmt
-        ).toString()}, from: ${address}, to: ${receiverAddress}`;
+        const transaction = _buildTestTransferTransaction(address);
 
-        const transaction = new TransferTransaction()
-          .addHbarTransfer(address, Hbar.fromTinybars(-transactionAmt))
-          .addHbarTransfer(receiverAddress, Hbar.fromTinybars(transactionAmt))
-          .setTransactionMemo(memo)
-          .setTransactionId(transactionId);
-
-        const params = HederaParamsFactory.buildSignAndSendTransactionPayload(
+        const params = HederaParamsFactory.buildTransactionPayload(
           RequestType.CryptoTransfer,
           transaction
         );
@@ -473,7 +475,7 @@ export function JsonRpcContextProvider({
           )
           .setTransactionId(transactionId);
 
-        const params = HederaParamsFactory.buildSignAndSendTransactionPayload(
+        const params = HederaParamsFactory.buildTransactionPayload(
           RequestType.ConsensusSubmitMessage,
           transaction
         );
@@ -505,12 +507,19 @@ export function JsonRpcContextProvider({
         const method =
           DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_RETURN_TRANSACTION;
 
-        const payload = {
+        const transaction = _buildTestTransferTransaction(address);
+
+        const params = HederaParamsFactory.buildTransactionPayload(
+          RequestType.CryptoTransfer,
+          transaction
+        );
+
+        const payload: HederaSessionRequestParams = {
           topic: session!.topic,
           chainId,
           request: {
             method,
-            params: { hello: "world" },
+            params,
           },
         };
 
