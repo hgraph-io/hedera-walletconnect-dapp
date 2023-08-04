@@ -57,6 +57,7 @@ interface IContext {
     testSignAndExecuteCryptoTransfer: TRpcRequestCallback;
     testSignAndExecuteTopicSubmitMessage: TRpcRequestCallback;
     testSignAndReturnCryptoTransfer: TRpcRequestCallback;
+    testSignMessage: TRpcRequestCallback;
   };
   rpcResult?: IFormattedRpcResponse | null;
   isRpcRequestPending: boolean;
@@ -536,6 +537,36 @@ export function JsonRpcContextProvider({
               Buffer.from((result as any).transaction.bytes, "base64")
             ),
           }),
+        };
+      }
+    ),
+    testSignMessage: _createJsonRpcRequestHandler(
+      async (
+        chainId: string,
+        address: string
+      ): Promise<IFormattedRpcResponse> => {
+        const method = DEFAULT_HEDERA_METHODS.HEDERA_SIGN_MESSAGE;
+
+        const params = HederaParamsFactory.buildSignMessagePayload(
+          "Hello from hedera-walletconnect-dapp at " + new Date().toISOString()
+        );
+
+        const payload: HederaSessionRequestParams = {
+          topic: session!.topic,
+          chainId,
+          request: {
+            method,
+            params,
+          },
+        };
+
+        const result = await client!.request(payload);
+
+        return {
+          method,
+          address,
+          valid: true,
+          result: JSON.stringify(result),
         };
       }
     ),

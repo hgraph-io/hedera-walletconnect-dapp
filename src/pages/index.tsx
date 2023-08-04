@@ -208,6 +208,12 @@ const Home: NextPage = () => {
       callback: openModalWithCallback("testSignAndReturnCryptoTransfer"),
     });
 
+    /** Sign and return arbitrary data */
+    actions.push({
+      method: DEFAULT_HEDERA_METHODS.HEDERA_SIGN_MESSAGE,
+      callback: openModalWithCallback("testSignMessage"),
+    });
+
     return actions;
   };
 
