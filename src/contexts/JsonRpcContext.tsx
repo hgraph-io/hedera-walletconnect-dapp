@@ -547,14 +547,9 @@ export function JsonRpcContextProvider({
       ): Promise<IFormattedRpcResponse> => {
         const method = DEFAULT_HEDERA_METHODS.HEDERA_SIGN_MESSAGE;
 
-        const params = {
-          message: {
-            bytes: Buffer.from(
-              "Hello from hedera-walletconnect-dapp at " +
-                new Date().toISOString()
-            ).toString("base64"),
-          },
-        };
+        const params = HederaParamsFactory.buildSignMessagePayload(
+          "Hello from hedera-walletconnect-dapp at " + new Date().toISOString()
+        );
 
         const payload: HederaSessionRequestParams = {
           topic: session!.topic,

@@ -14,9 +14,7 @@ export type HederaSignAndSendTransactionParams = {
 };
 
 export type HederaSignMessageParams = {
-  message: {
-    bytes: string;
-  };
+  message: string;
 };
 
 export type HederaSessionRequestParams = TypedRequestParams<
@@ -35,6 +33,14 @@ export class HederaParamsFactory {
         type: type.toString(),
         bytes: this._encodeTransactionBytes(transaction),
       },
+    };
+  }
+
+  public static buildSignMessagePayload(
+    message: string
+  ): HederaSignMessageParams {
+    return {
+      message: Buffer.from(message).toString("base64"),
     };
   }
 
