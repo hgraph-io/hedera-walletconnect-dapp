@@ -237,10 +237,3 @@ export const getAllChainNamespaces = () => {
 export const getProviderUrl = (chainId: string) => {
   return `https://rpc.walletconnect.com/v1/?chainId=${chainId}&projectId=${process.env.NEXT_PUBLIC_PROJECT_ID}`;
 };
-
-export const formatTinybarAsHbar = (balance: number | string): string => {
-  const numBalance = Number(balance);
-  const balFromTinybars = numBalance / 1e8;
-  const [integer, decimal] = balFromTinybars.toString().split(".");
-  return Number(integer).toLocaleString() + "." + decimal;
-};

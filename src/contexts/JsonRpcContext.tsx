@@ -19,11 +19,11 @@ import {
   hashTypedDataMessage,
   verifySignature,
   rpcProvidersByChainId,
-} from "../helpers";
-import {
   HederaParamsFactory,
   HederaSessionRequestParams,
-} from "../helpers/HederaParamsFactory";
+  createOrRestoreHederaTransferReceiverAddress,
+  createOrRestoreHederaTopicId,
+} from "../helpers";
 import { useWalletConnectClient } from "./ClientContext";
 import {
   DEFAULT_EIP155_METHODS,
@@ -408,11 +408,13 @@ export function JsonRpcContextProvider({
 
   // -------- HEDERA RPC METHODS --------
 
-  const _buildTestTransferTransaction = (address: string) => {
+  const _buildTestTransferTransaction = async (address: string) => {
     const payerAccountId = new AccountId(Number(address.split(".").pop()));
     const transactionId = TransactionId.generate(payerAccountId);
     const transactionAmt = 1000;
-    const receiverAddress = "0.0.432284"; // hard-coded to my 2nd test account for now
+    const receiverAddress =
+      await createOrRestoreHederaTransferReceiverAddress();
+
     const memo = `Transfer amount: ${Hbar.fromTinybars(
       transactionAmt
     ).toString()}, from: ${address}, to: ${receiverAddress}`;
@@ -433,7 +435,7 @@ export function JsonRpcContextProvider({
         const method =
           DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_EXECUTE_TRANSACTION;
 
-        const transaction = _buildTestTransferTransaction(address);
+        const transaction = await _buildTestTransferTransaction(address);
 
         const params = HederaParamsFactory.buildTransactionPayload(
           RequestType.CryptoTransfer,
@@ -469,9 +471,10 @@ export function JsonRpcContextProvider({
 
         const payerAccountId = new AccountId(Number(address.split(".").pop()));
         const transactionId = TransactionId.generate(payerAccountId);
+        const topicId = await createOrRestoreHederaTopicId();
 
         const transaction = new TopicMessageSubmitTransaction()
-          .setTopicId("0.0.432078") // Topic created for testing this app
+          .setTopicId(topicId)
           .setMessage(
             `Hello from hedera-walletconnect-dapp at ${new Date().toISOString()}`
           )
@@ -509,7 +512,7 @@ export function JsonRpcContextProvider({
         const method =
           DEFAULT_HEDERA_METHODS.HEDERA_SIGN_AND_RETURN_TRANSACTION;
 
-        const transaction = _buildTestTransferTransaction(address);
+        const transaction = await _buildTestTransferTransaction(address);
 
         const params = HederaParamsFactory.buildTransactionPayload(
           RequestType.CryptoTransfer,

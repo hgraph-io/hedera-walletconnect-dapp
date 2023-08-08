@@ -1,6 +1,6 @@
 import axios, { AxiosInstance } from "axios";
 import { AssetData } from "./types";
-import { formatTinybarAsHbar } from "./utilities";
+import { apiGetHederaAccountBalance } from "./hedera";
 
 export const rpcProvidersByChainId: Record<number, any> = {
   1: {
@@ -45,13 +45,7 @@ export async function apiGetAccountBalance(
 ): Promise<AssetData> {
   const namespace = chainId.split(":")[0];
   if (namespace === "hedera") {
-    const response = await hederaApi.get(`/accounts/${address}`);
-    const { balance } = response.data.balance;
-    return {
-      balance: formatTinybarAsHbar(balance),
-      name: "HBAR",
-      symbol: "ℏ",
-    };
+    return apiGetHederaAccountBalance(address);
   }
   if (namespace !== "eip155") {
     return { balance: "", symbol: "", name: "" };
