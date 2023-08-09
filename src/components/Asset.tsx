@@ -46,10 +46,10 @@ function getAssetIcon(asset: AssetData): JSX.Element {
 function formatAssetBalance(asset: AssetData) {
   if (!asset.balance) return "0";
   switch (asset.name.toLowerCase()) {
-    case "ether":
-      return fromWad(asset.balance);
-    default:
+    case "hbar":
       return asset.balance;
+    default:
+      return fromWad(asset.balance);
   }
 }
 

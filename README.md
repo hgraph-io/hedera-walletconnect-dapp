@@ -23,7 +23,8 @@ client for WalletConnect v2 to:
 yarn
 ```
 
-2. Set up your local environment variables by copying the example into your own `.env.local` file:
+2. To test Hedera integration, go to [Hedera Portal](https://portal.hedera.com/) to create a Testnet account.
+3. Set up your local environment variables by copying the example into your own `.env.local` file:
 
 ```bash
 cp .env.local.example .env.local
@@ -33,6 +34,8 @@ Your `.env.local` now contains the following environment variables:
 
 - `NEXT_PUBLIC_PROJECT_ID` (placeholder) - You can generate your own ProjectId at https://cloud.walletconnect.com
 - `NEXT_PUBLIC_RELAY_URL` (already set)
+- `NEXT_PUBLIC_HEDERA_ACCOUNT_ID` (placeholder) - Get your testnet account id from https://portal.hedera.com/
+- `NEXT_PUBLIC_HEDERA_PRIVATE_KEY` (placeholder) - Get your testnet private key from https://portal.hedera.com/
 
 ## Develop
 
@@ -57,5 +60,3 @@ yarn build
 ## Demo
 
 https://github.com/hgraph-io/hedera-walletconnect-dapp/assets/136644362/a4440481-f51d-4faf-ae3d-8afeeef33779
-
-
