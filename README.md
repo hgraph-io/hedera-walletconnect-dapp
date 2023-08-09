@@ -1,3 +1,9 @@
+# Archived
+This app was created for R&D purposes. Please refer to the full version of the demo apps linked below:
+- [WalletConnect React dApp](https://github.com/WalletConnect/web-examples/tree/main/dapps/react-dapp-v2)
+- [WalletConnect React Wallet](https://github.com/WalletConnect/web-examples/tree/main/wallets/react-wallet-v2)
+- [Hgraph fork of WalletConnect/web-examples](https://github.com/hgraph-io/web-examples)
+
 # React dApp (with standalone v2 client)
 
 This demo dApp is a pared down version of WalletConnect's [react-dapp-v2 demo](https://github.com/WalletConnect/web-examples/tree/main/dapps/react-dapp-v2). This version of the app only showcases connecting a dApp and a wallet for Ethereum (EVM) chains via JSON-RPC and Hedera via the official `@hashgraph/sdk` [library](https://github.com/hashgraph/hedera-sdk-js).
